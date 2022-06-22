@@ -35,6 +35,18 @@
     }
 </style>
 </head>
+<script>
+    $(function (){
+        $("#registe_form").submit(function (){
+            if(true){
+                $.post("user/register",$("#registe_form").serialize(),function (res){
+                    console.log(res)
+                    console.log("kaishic")
+                })
+            }
+        })
+    })
+</script>
 <body>
 <div id="header"></div>
 <div class="container" style="width:100%;background:url('./image/regist_bg.jpg');">
@@ -45,8 +57,7 @@
 
         <div class="col-md-8" style="background:#fff;padding:40px 80px;margin:30px;border:7px solid #ccc;">
             <font>会员注册</font>USER REGISTER
-            <form class="form-horizontal" style="margin-top:5px;" method="post"
-                  action="${pageContext.request.contextPath }/user">
+            <form class="form-horizontal" style="margin-top:5px;" method="post" id="registe_form">
                 <input type="hidden" name="method" value="regist">
                 <div class="form-group">
                     <label for="username" class="col-sm-2 control-label">用户名</label>

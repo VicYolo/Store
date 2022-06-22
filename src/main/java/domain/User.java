@@ -27,9 +27,9 @@ public class User {
 	
 	private String birthday;
 	private String sex;
-	private Integer state;
-	
-	private String code;
+//	private Integer state;
+//
+//	private String code;
 
 	public String getUid() {
 		return uid;
@@ -95,21 +95,21 @@ public class User {
 		this.sex = sex;
 	}
 
-	public Integer getState() {
-		return state;
-	}
-
-	public void setState(Integer state) {
-		this.state = state;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
+//	public Integer getState() {
+//		return state;
+//	}
+//
+//	public void setState(Integer state) {
+//		this.state = state;
+//	}
+//
+//	public String getCode() {
+//		return code;
+//	}
+//
+//	public void setCode(String code) {
+//		this.code = code;
+//	}
 	
 	
 }
