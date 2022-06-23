@@ -11,7 +11,7 @@ public class UserDaoImpl implements UserDao {
     private JdbcTemplate jdbcTemplate = new JdbcTemplate(JDBCUtils.getDataSource());
     @Override
     public User findByUsername(String username) {
-        String sql = "SELECT * FROM tab_user WHERE username = ?";
+        String sql = "SELECT * FROM user WHERE username = ?";
         User user = null;
         try {
             user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<User>(User.class), username);
@@ -23,16 +23,16 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void save(User user) {
         System.out.println("数据库插入");
-        String sql = "INSERT INTO tab_user(username,password,name,birthday,sex,telephone,email) VALUES(?,?,?,?,?,?,?);";
-        jdbcTemplate.update(sql,user.getUsername(),user.getPassword(),
-                user.getName(),user.getBirthday(),user.getSex(),user.getTelephone(),user.getEmail());
+        String sql = "INSERT INTO user(uid,username,password,name,email,telephone,birthday,sex) VALUES(?,?,?,?,?,?,?,?);";
+        jdbcTemplate.update(sql,user.getUid(),user.getUsername(),user.getPassword(), user.getName(),
+                user.getEmail(),user.getTelephone(),user.getBirthday(),user.getSex());
         System.out.println("数据库插入完毕");
     }
 
     @Override
     public User findByUsernameAndPassword(String username, String password) {
 //        System.out.println("userDao....");
-        String sql = "SELECT * FROM tab_user WHERE username = ? AND password = ?";
+        String sql = "SELECT * FROM user WHERE username = ? AND password = ?";
         User user = null;
         try{
             user = jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<User>(User.class),username,password);

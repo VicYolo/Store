@@ -1,13 +1,11 @@
 package web.servlet;
 
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.ResultInfo;
 import domain.User;
 import org.apache.commons.beanutils.BeanUtils;
 import service.UserService;
 import service.impl.UserServiceImpl;
+import util.UuidUtil;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -52,6 +50,7 @@ public class UserServlet extends BaseServlet{
         User user = new User();
         try {
             BeanUtils.populate(user,parameterMap);
+            user.setUid(UuidUtil.getUuid());
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -66,6 +65,8 @@ public class UserServlet extends BaseServlet{
             info.setErrorMsg("该用户已存在");
         }
         this.writeBackInfoJson(resp,info);
+        System.out.println(info.isFlag());
+        System.out.println(info.getErrorMsg());
     }
 
 }
