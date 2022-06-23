@@ -17,9 +17,9 @@ public class CategoryServlet extends BaseServlet{
     public void findAll(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("utf-8");
         List<Category> res = categoryService.findAll();
-        for (Category re : res) {
-            System.out.println(re.getCname());
-        }
+//        for (Category re : res) {
+//            System.out.println(re.getCname());
+//        }
         this.writeBackInfoJson(resp,res);
     }
 }

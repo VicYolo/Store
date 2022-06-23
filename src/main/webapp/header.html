@@ -4,8 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="./js/jquery-1.11.3.min.js" type="text/javascript"></script>
 </head>
 
+<script>
+    $(function (){
+        // ajax传递，从数据库拿取分类信息
+        $.get("category/findAll",{},function (res){
+            // console.log(res)
+            res_li = ''
+            for(var re of res){
+                var li = '<li><a href="#">'+re.cname+'</a></li>'
+                res_li +=li
+            }
+            $("#category").html(res_li)
+            // console.log("取到了")
+        })
+    })
+</script>
 <body>
     <!--
                 时间：2015-12-30
@@ -47,12 +63,12 @@
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="product_list.html">手机数码<span class="sr-only">(current)</span></a>
-                        </li>
-                        <li><a href="#">电脑办公</a></li>
-                        <li><a href="#">电脑办公</a></li>
-                        <li><a href="#">电脑办公</a></li>
+                    <ul class="nav navbar-nav" id = "category">
+<!--                        <li class="active"><a href="product_list.html">手机数码<span class="sr-only">(current)</span></a>-->
+<!--                        </li>-->
+<!--                        <li><a href="#">电脑办公</a></li>-->
+<!--                        <li><a href="#">电脑办公</a></li>-->
+<!--                        <li><a href="#">电脑办公</a></li>-->
                     </ul>
                     <form class="navbar-form navbar-right" role="search">
                         <div class="form-group">

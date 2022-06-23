@@ -35,6 +35,20 @@
     }
 </style>
 </head>
+<script>
+    $(function (){
+        $("#btn_register").click(function (){
+            $.post("user/register",$("#register_form").serialize(),function (res){
+                if(res.flag){
+                    location.href = "login.html"
+                }else{
+                    alert(res.errorMsg)
+                }
+            })
+        })
+    })
+
+</script>
 <body>
 <div id="header"></div>
 <div class="container" style="width:100%;background:url('./image/regist_bg.jpg');">
@@ -45,8 +59,7 @@
 
         <div class="col-md-8" style="background:#fff;padding:40px 80px;margin:30px;border:7px solid #ccc;">
             <font>会员注册</font>USER REGISTER
-            <form class="form-horizontal" style="margin-top:5px;" method="post"
-                  action="${pageContext.request.contextPath }/user">
+            <form class="form-horizontal" style="margin-top:5px;" method="post" id = "register_form">
                 <input type="hidden" name="method" value="regist">
                 <div class="form-group">
                     <label for="username" class="col-sm-2 control-label">用户名</label>
@@ -99,16 +112,14 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <input type="submit" width="100" value="注册" name="submit" border="0"
+                        <input type="button" width="100" value="注册" name="submit" border="0"
                                style="background: url('./images/register.gif') no-repeat scroll 0 0 rgba(0, 0, 0, 0);
-				    height:35px;width:100px;color:white;">
+				    height:35px;width:100px;color:white;" id="btn_register">
                     </div>
                 </div>
             </form>
         </div>
-
         <div class="col-md-2"></div>
-
     </div>
 </div>
 <div id="footer"></div>
