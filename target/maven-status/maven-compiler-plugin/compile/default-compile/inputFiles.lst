@@ -1,4 +1,6 @@
+D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\service\ProductService.java
 D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\service\impl\CategoryServiceImpl.java
+D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\web\servlet\IndexServlet.java
 D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\domain\Cart.java
 D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\util\Md5Util.java
 D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\web\servlet\CategoryServlet.java
@@ -19,6 +21,7 @@ D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\web\servlet\BaseServlet.
 D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\domain\Product.java
 D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\dao\impl\CategoryDaoImpl.java
 D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\web\servlet\UserServlet.java
+D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\service\impl\ProductServiceImpl.java
 D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\util\MailUtils.java
 D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\domain\ResultInfo.java
 D:\Intellij IDEA\Intellij idea demo\Store\src\main\java\util\JDBCUtils.java
