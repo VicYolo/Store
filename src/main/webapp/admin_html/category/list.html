@@ -49,6 +49,7 @@
                 return lis;
             }
 
+            //发送请求
             function display() {
                 var lis = loadTable();
                 $.get("../../adminCategoryServlet/findAll", {}, function (data) {
@@ -64,7 +65,7 @@
                             "</td>\n" +
                             "<td align=\"center\" style=\"HEIGHT: 22px\">\n" +
                             // "<a href=\"${ pageContext.request.contextPath }/adminCategory\">\n" +
-                            "<img src=\"../../images/i_edit.gif\" border=\"0\" style=\"CURSOR: hand\">\n" +
+                            "<img src=\"../../images/i_edit.gif\" border=\"0\" style=\"CURSOR: hand\" onclick='edit(this)'>\n" +
                             // "</a>\n" +
                             "</td>\n" +
                             "\n" +
@@ -89,7 +90,6 @@
             $(function () {
                 display()
             })
-
 
             /**
              * 点击添加按钮增加类别
@@ -128,6 +128,12 @@
             /**
              * 点击编辑按钮编辑类别
              */
+            function edit(obj) {
+                //跳转到edit.html并传参数
+                var tr = obj.parentNode.parentNode;
+                var cname = tr.cells.item(1).innerHTML;
+                window.location.href = "edit.html?cname=" + cname
+            }
 
         </script>
 

@@ -9,11 +9,15 @@
             $(function () {
                 $("#userAction_save_do_submit").click(function () {
                     var category = $("#userAction_save_do_logonName").val()
-                    alert(category)
+                    // alert(category)
                     $.post("../../adminCategoryServlet/save", {"category": category}, function (data) {
-                        alert("添加成功");
-                        window.location.href = "list.html";
-                    }, "text");
+                        if (data.flag) {
+                            alert("添加成功")
+                            window.location.href = "list.html"
+                        } else {
+                            alert(data.errorMsg)
+                        }
+                    }, "json");
                 })
 
             })

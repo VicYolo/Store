@@ -50,15 +50,19 @@ public class AdminCategoryServlet extends BaseServlet {
     public void save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //1获取数据内容
         String cname = request.getParameter("category");
-        System.out.println(cname);
         //2封装category
         Category category = new Category();
         category.setCid(UuidUtil.getUuid());
         category.setCname(cname);
-        System.out.println(cname);
         //3调用service保存
-        categoryService.save(category);
-
+        boolean flag = categoryService.save(category);
+        System.out.println(flag);
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setFlag(flag);
+        if (!flag) {
+            resultInfo.setErrorMsg("添加失败，输入名称有重复");
+        }
+        writeBackInfoJson(response, resultInfo);
     }
 
     /**
@@ -82,14 +86,42 @@ public class AdminCategoryServlet extends BaseServlet {
         ResultInfo resultInfo = new ResultInfo();
         resultInfo.setFlag(flag);
         if (!flag) {
-            resultInfo.setErrorMsg("删除失败");
+            resultInfo.setErrorMsg("删除失败，该分类下面还有商品");
         }
 
-
         writeBackInfoJson(response, resultInfo);
-
-        this.findAll(request, response);
     }
 
+
+    /**
+     * 后台编辑类别
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //1获取数据内容
+        request.setCharacterEncoding("utf-8");
+        String oldCname = request.getParameter("oldCname");
+        String newCname = request.getParameter("newCname");
+
+        //2解码
+        System.out.println("解码前：" + oldCname + "  " + newCname);
+        oldCname = URLDecoder.decode(oldCname, "utf-8");
+        oldCname = URLDecoder.decode(oldCname, "utf-8");//解两次码
+        newCname = URLDecoder.decode(newCname, "utf-8");
+        System.out.println("解码后：" + oldCname + "  " + newCname);
+
+        //3调用service编辑
+        boolean flag = categoryService.edit(oldCname, newCname);
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setFlag(flag);
+        if (!flag) {
+            resultInfo.setErrorMsg("编辑失败，输入名称有重复");
+        }
+        writeBackInfoJson(response, resultInfo);
+    }
 
 }

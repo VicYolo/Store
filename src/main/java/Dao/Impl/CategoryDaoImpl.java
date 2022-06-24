@@ -37,13 +37,43 @@ public class CategoryDaoImpl implements CategoryDao {
     @Override
     public boolean delete(String cname) {
         String sql = "delete from category where cname = ?";
-        try{
+        try {
             template.update(sql, cname);
-            System.out.println(cname + "从数据库删除成功");
+            //System.out.println(cname + "从数据库删除成功");
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * 修改cname
+     *
+     * @param category
+     */
+    @Override
+    public void edit(Category category) {
+        String sql = "update category set cname = ? where cid = ?";
+        template.update(sql, category.getCname(), category.getCid());
+    }
+
+    /**
+     * 根据cname寻找cid然后返回category
+     *
+     * @param cname
+     * @return
+     */
+    @Override
+    public Category findByCname(String cname) {
+        String sql = "select * from category where cname = ?";
+        try {
+            Category category = template.queryForObject(sql, new BeanPropertyRowMapper<Category>(Category.class), cname);
+            return category;
+        } catch (Exception e) {
+            return null;
+        }
+
+
     }
 
 
