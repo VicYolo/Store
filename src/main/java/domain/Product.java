@@ -29,7 +29,23 @@ public class Product {
 	private Integer is_hot;  //是否热门  1:热门    0:不热门
 	private String pdesc;
 	private Integer pflag;	//是否下架    1:下架	0:未下架
-	
+
+	@Override
+	public String toString() {
+		return "Product{" +
+				"pid='" + pid + '\'' +
+				", pname='" + pname + '\'' +
+				", market_price=" + market_price +
+				", shop_price=" + shop_price +
+				", pimage='" + pimage + '\'' +
+				", pdate=" + pdate +
+				", is_hot=" + is_hot +
+				", pdesc='" + pdesc + '\'' +
+				", pflag=" + pflag +
+				", category=" + category +
+				'}';
+	}
+
 	//在多的一方放入一个一的一方的对象 用来表示属于那个分类
 	private Category category;
 

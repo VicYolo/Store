@@ -9,4 +9,5 @@ public interface CategoryDao {
     List<Category> findAll();
     List<Product> findByHot();
     List<Product> findByNew();
+    Product findBypid(String pid);
 }

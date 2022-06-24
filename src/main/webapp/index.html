@@ -42,20 +42,20 @@
                 var hot_product = res[index]
                 if (index == 2 || index == 5) {
                     li = li = '<div class="col-md-2 yes-right-border" style="text-align:center;height:200px;padding:10px 0px;">\n' +
-                        '    <a href="product_info.html">\n' +
+                        '    <a href="product_info.html?pid='+hot_product.pid+'">\n' +
                         '        <img src="'+hot_product.pimage+'" width="130" height="130" style="display: inline-block;">\n' +
                         '    </a>\n' +
-                        '    <p><a href="product_info.html" style=\'color:#666\'>'+hot_product.pname+'</a></p>\n' +
+                        '    <p><a href="product_info.html?pid='+hot_product.pid+'" style=\'color:#666\'>'+hot_product.pname+'</a></p>\n' +
                         '    <p>\n' +
                         '        <font color="#E4393C" style="font-size:16px">&yen;'+hot_product.shop_price+'</font>\n' +
                         '    </p>\n' +
                         '</div>'
                 } else {
                     li = '<div class="col-md-2" style="text-align:center;height:200px;padding:10px 0px;">\n' +
-                        '    <a href="product_info.html">\n' +
+                        '    <a href="product_info.html?pid='+hot_product.pid+'">\n' +
                         '        <img src="'+hot_product.pimage+'" width="130" height="130" style="display: inline-block;">\n' +
                         '    </a>\n' +
-                        '    <p><a href="product_info.html" style=\'color:#666\'>'+hot_product.pname+'</a></p>\n' +
+                        '    <p><a href="product_info.html?pid='+hot_product.pid+'" style=\'color:#666\'>'+hot_product.pname+'</a></p>\n' +
                         '    <p>\n' +
                         '        <font color="#E4393C" style="font-size:16px">&yen;'+hot_product.shop_price+'</font>\n' +
                         '    </p>\n' +
@@ -82,20 +82,20 @@
                 var new_product = res[index]
                 if (index == 2 || index == 5 || index==8) {
                     li = '<div class="col-md-2 yes-right-border" style="text-align:center;height:200px;padding:10px 0px;">\n' +
-                        '    <a href="product_info.html">\n' +
+                        '    <a href="product_info.html?pid='+new_product.pid+'">\n' +
                         '        <img src="'+new_product.pimage+'" width="130" height="130" style="display: inline-block;">\n' +
                         '    </a>\n' +
-                        '    <p><a href="product_info.html" style=\'color:#666\'>'+new_product.pname+'</a></p>\n' +
+                        '    <p><a href="product_info.html?pid='+new_product.pid+'" style=\'color:#666\'>'+new_product.pname+'</a></p>\n' +
                         '    <p>\n' +
                         '        <font color="#E4393C" style="font-size:16px">&yen;'+new_product.shop_price+'</font>\n' +
                         '    </p>\n' +
                         '</div>'
                 } else {
                     li = '<div class="col-md-2" style="text-align:center;height:200px;padding:10px 0px;">\n' +
-                        '    <a href="product_info.html">\n' +
+                        '    <a href="product_info.html?pid='+new_product.pid+'">\n' +
                         '        <img src="'+new_product.pimage+'" width="130" height="130" style="display: inline-block;">\n' +
                         '    </a>\n' +
-                        '    <p><a href="product_info.html" style=\'color:#666\'>'+new_product.pname+'</a></p>\n' +
+                        '    <p><a href="product_info.html?pid='+new_product.pid+'" style=\'color:#666\'>'+new_product.pname+'</a></p>\n' +
                         '    <p>\n' +
                         '        <font color="#E4393C" style="font-size:16px">&yen;'+new_product.shop_price+'</font>\n' +
                         '    </p>\n' +

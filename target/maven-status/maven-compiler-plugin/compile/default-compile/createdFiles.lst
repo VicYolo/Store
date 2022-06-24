@@ -21,6 +21,7 @@ util\MailUtils$1.class
 service\impl\ProductServiceImpl.class
 util\JDBCUtils.class
 util\MailUtils.class
+web\servlet\ProductServlet.class
 util\JedisUtil.class
 service\impl\CategoryServiceImpl.class
 web\servlet\IndexServlet.class

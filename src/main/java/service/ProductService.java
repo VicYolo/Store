@@ -7,5 +7,5 @@ import java.util.List;
 public interface ProductService {
     List<Product> findByHot();
     List<Product> findByNew();
-
+    Product findBypid(String pid);
 }

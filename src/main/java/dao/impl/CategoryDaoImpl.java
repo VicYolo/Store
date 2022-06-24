@@ -28,4 +28,19 @@ public class CategoryDaoImpl implements CategoryDao {
         String sql = "select * from product where pflag = 0  order by pdate limit ?";
         return jdbcTemplate.query(sql,new BeanPropertyRowMapper<Product>(Product.class),9);
     }
+
+    @Override
+    public Product findBypid(String pid) {
+        System.out.println("dao 中 pid为"+pid+"||结尾");
+        String sql = "select * from product where pid ="+pid;
+        System.out.println(sql);
+//        莫名其妙 不知道为什么用queryforobject不行
+        List<Product> product = null;
+        try{
+            product = jdbcTemplate.query(sql,new BeanPropertyRowMapper<Product>(Product.class));
+        }catch (Exception e){
+            System.out.println("出错了");
+        }
+        return product.get(0);
+    }
 }

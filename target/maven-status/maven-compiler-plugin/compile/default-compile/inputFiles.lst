@@ -20,6 +20,7 @@ D:\maven_workspace\Store\src\main\java\util\MailUtils.java
 D:\maven_workspace\Store\src\main\java\service\UserService.java
 D:\maven_workspace\Store\src\main\java\dao\impl\CategoryDaoImpl.java
 D:\maven_workspace\Store\src\main\java\domain\Product.java
+D:\maven_workspace\Store\src\main\java\web\servlet\ProductServlet.java
 D:\maven_workspace\Store\src\main\java\util\JedisUtil.java
 D:\maven_workspace\Store\src\main\java\web\servlet\IndexServlet.java
 D:\maven_workspace\Store\src\main\java\dao\impl\UserDaoImpl.java

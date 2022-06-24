@@ -18,4 +18,11 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> findByNew() {
         return categoryDao.findByNew();
     }
+
+    @Override
+    public Product findBypid(String pid) {
+        Product bypid = categoryDao.findBypid(pid);
+//        System.out.println(bypid);
+        return bypid;
+    }
 }
