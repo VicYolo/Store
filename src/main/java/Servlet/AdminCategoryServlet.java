@@ -30,13 +30,8 @@ public class AdminCategoryServlet extends BaseServlet {
     public void findAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //1调用service获取所有分类
         List<Category> list = categoryService.findAll();
-        //写成json返回
+        //2写成json返回
         writeBackInfoJson(response, list);
-        //2返回值放到request域中
-        //request.setAttribute("list", list);
-        //3请求转发
-        //request.getRequestDispatcher("/admin_html/category/list.html").forward(request, response);
-        //return;
     }
 
     /**
