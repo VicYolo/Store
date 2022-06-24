@@ -3,6 +3,7 @@ package Servlet;
 import Serivce.CategoryService;
 import Serivce.impl.CategoryServiceImpl;
 import domain.Category;
+import domain.ResultInfo;
 import util.UuidUtil;
 
 import javax.servlet.*;
@@ -72,18 +73,21 @@ public class AdminCategoryServlet extends BaseServlet {
         //1获取数据内容
         request.setCharacterEncoding("utf-8");
         String cname = request.getParameter("cname");
-        System.out.println("解码前："+cname);
+        System.out.println("解码前：" + cname);
         cname = URLDecoder.decode(cname, "utf-8");
-        System.out.println("解码后："+cname);
+        System.out.println("解码后：" + cname);
         //3调用service删除
         boolean flag = categoryService.delete(cname);
 
-        if(flag){
-
-        }else {
-
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setFlag(flag);
+        if (!flag) {
+            resultInfo.setErrorMsg("删除失败");
         }
-        System.out.println("delete结束");
+
+
+        writeBackInfoJson(response, resultInfo);
+
         this.findAll(request, response);
     }
 

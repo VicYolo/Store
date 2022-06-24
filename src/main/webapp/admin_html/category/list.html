@@ -116,8 +116,12 @@
                 var cname = tr.cells.item(1).innerHTML;
                 cname = encodeURIComponent(cname);//url解码
                 $.get("../../adminCategoryServlet/delete", {"cname": cname}, function (data) {
-                    alert("删除成功")
-                    window.location.href = "list.html"
+                    if (data.flag) {
+                        alert("删除成功")
+                        window.location.href = "list.html"
+                    } else {
+                        alert(data.errorMsg)
+                    }
                 }, "json")
             }
 
