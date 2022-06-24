@@ -1,0 +1,112 @@
+<!doctype html>
+<HTML>
+    <HEAD>
+        <meta http-equiv="Content-Language" content="zh-cn">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <LINK href="../../css/Style1.css" type="text/css" rel="stylesheet">
+
+        <script language="javascript" src="../../js/jquery-3.3.1.js"></script>
+        <script type="text/javascript">
+
+            function GetRequest() {
+                var url = location.search; //获取url中"?"符后的字串
+                // alert(url)
+                var theRequest = {};
+                if (url.indexOf("?") !== -1) {
+                    theRequest["uname"] = url.substr(7);
+                }
+                console.log(theRequest)
+                return theRequest;
+            }
+
+            $(function () {
+                //先解码
+                var result = GetRequest();
+                // var cname = encodeURIComponent(result.cname);//url解码
+                var uname = result.uname
+                $("#title").html("查看用户详情:" + decodeURIComponent(uname))
+                // alert("进入编辑")
+                $.post("../../adminUserServlet/findByUsername", {"uname": uname}, function (data) {
+                    document.getElementById("name").value = data.name;
+                    document.getElementById("password").value = data.password;
+                    document.getElementById("email").value = data.email;
+                    document.getElementById("telephone").value = data.telephone;
+                    document.getElementById("birth").value = data.birthday;
+                    document.getElementById("sex").value = data.sex;
+                }, "json");
+            })
+
+
+        </script>
+    </HEAD>
+
+    <body>
+        <form id="userAction_save_do" name="Form1" method="post">
+            <input type="hidden" name="uid"/>
+            <input type="hidden" name="state"/>
+            <input type="hidden" name="code"/>
+            &nbsp;
+            <table cellSpacing="1" cellPadding="5" width="100%" align="center" bgColor="#eeeeee"
+                   style="border: 1px solid #8ba7e3" border="0">
+                <tr>
+                    <td class="ta_01" align="center" bgColor="#afd1f3" colSpan="4"
+                        height="26">
+                        <strong id="title"><STRONG>用户信息</STRONG>
+                        </strong>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
+                        用户姓名：
+                    </td>
+                    <td class="ta_01" bgColor="#ffffff">
+                        <input readonly="readonly" type="text" name="name" id="name" class="bg"/>
+                    </td>
+                    <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
+                        密码：
+                    </td>
+                    <td class="ta_01" bgColor="#ffffff">
+                        <input readonly="readonly" type="text" name="password" id="password" class="bg"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
+                        性别：
+                    </td>
+                    <td class="ta_01" bgColor="#ffffff">
+                        <input readonly="readonly" type="text" name="sex" id="sex" class="bg"/>
+                    </td>
+                    <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
+                        出生日期：
+                    </td>
+                    <td class="ta_01" bgColor="#ffffff">
+                        <input readonly="readonly" type="text" name="birth" id="birth" class="bg"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
+                        电话：
+                    </td>
+                    <td class="ta_01" bgColor="#ffffff">
+                        <input readonly="readonly" type="text" name="phone" id="telephone" class="bg"/>
+                    </td>
+                    <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
+                        邮箱：
+                    </td>
+                    <td class="ta_01" bgColor="#ffffff">
+                        <input readonly="readonly" type="text" name="email" id="email" class="bg"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="ta_01" style="WIDTH: 100%" align="center"
+                        bgColor="#f5fafe" colSpan="4">
+                        <INPUT class="button_ok" type="button" onclick="history.go(-1)" value="返回"/>
+                        <span id="Label1"></span>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</HTML>
