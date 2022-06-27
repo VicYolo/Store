@@ -20,6 +20,14 @@
             $("#category").html(res_li)
             // console.log("取到了")
         })
+        $.get("user/getName",{},function(res){
+            // alert("henqiguai")
+            if(res!=null){
+                var msg = "欢迎回来，"+res.name
+                $("#name").html(msg)
+            }
+
+        })
     })
 </script>
 <body>
@@ -29,13 +37,14 @@
             -->
     <div class="container-fluid">
         <div class="col-md-4">
-            <img src="./img/logo2.png" />
+            <img src="./img/logo2.png" style="width:198px;height:57px"/>
         </div>
         <div class="col-md-5">
             <img src="./img/header.png" />
         </div>
         <div class="col-md-3" style="padding-top:20px">
             <ol class="list-inline">
+                <li id = "name"></li>
                 <li><a href="login.html">登录</a></li>
                 <li><a href="register.html">注册</a></li>
                 <li><a href="cart.html">购物车</a></li>

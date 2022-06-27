@@ -13,20 +13,15 @@ public class UserServiceImpl implements UserService {
         if(byUsername!=null){
             return false;
         }else{
-            System.out.println("Service....准备数据库保存");
+//            System.out.println("Service....准备数据库保存");
             userDao.save(user);
             return true;
         }
     }
 
     @Override
-    public boolean login(User user) {
-        System.out.println("userService..");
-        User byUsernameAndPassword = userDao.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-        if(byUsernameAndPassword!=null){
-            return true;
-        }else{
-            return false;
-        }
+    public User login(User user) {
+//        System.out.println("userService..");
+        return userDao.findByUsernameAndPassword(user.getUsername(), user.getPassword());
     }
 }

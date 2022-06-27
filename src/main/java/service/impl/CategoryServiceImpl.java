@@ -4,10 +4,14 @@ import dao.CategoryDao;
 import dao.impl.CategoryDaoImpl;
 import domain.Category;
 import service.CategoryService;
+import util.BeanFactory;
+
 import java.util.List;
 
 public class CategoryServiceImpl implements CategoryService {
-    CategoryDao categoryDao = new CategoryDaoImpl();
+    //    CategoryDao categoryDao = new CategoryDaoImpl();
+    CategoryDao categoryDao = (CategoryDao) BeanFactory.getBean("CategoryDao");
+
     @Override
     public List<Category> findAll() {
 //        缓存部分遇到一丢丢麻烦

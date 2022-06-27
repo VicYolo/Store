@@ -17,7 +17,7 @@ public class ProductServlet extends BaseServlet{
         if("null".equals(pid)){
             pid = null;
         }
-        System.out.println(pid);
+//        System.out.println(pid);
         Product product = productService.findBypid(pid);
         writeBackInfoJson(resp,product);
     }

@@ -35,7 +35,73 @@
         }
     </style>
 </head>
+<script>
+    // 请求该用户账单
+    $(function (){
+        getCart()
+    })
+    function getCart(){
+        $.get("cart/getCart",{},function (res){
+            console.log(res)
+            var th = '<tr class="warning">\n' +
+                '                            <th>图片</th>\n' +
+                '                            <th>商品</th>\n' +
+                '                            <th>价格</th>\n' +
+                '                            <th>数量</th>\n' +
+                '                            <th>小计</th>\n' +
+                '                            <th>操作</th>\n' +
+                '                        </tr>'
+            var t_lis = "";
+            t_lis += th
 
+            for (var i = 0; i < res.cartItems.length; i++) {
+                var goods = res.cartItems[i]
+                var tr = '<tr class="active" >\n' +
+                    '                            <td width="60" width="40%">\n' +
+                    '                                <input type="hidden" name="id" value="22">\n' +
+                    '                                <img src="'+goods.product.pimage+'" width="70" height="60">\n' +
+                    '                            </td>\n' +
+                    '                            <td width="30%">\n' +
+                    '                                <a target="_blank">'+goods.product.pname+'</a>\n' +
+                    '                            </td>\n' +
+                    '                            <td width="20%">\n' +
+                    '                                ￥'+goods.product.shop_price+'\n' +
+                    '                            </td>\n' +
+                    '                            <td width="10%">\n' +
+                    '                                <input type="text" name="quantity" value="'+goods.count+'" maxlength="4" size="10">\n' +
+                    '                            </td>\n' +
+                    '                            <td width="15%">\n' +
+                    '                                <span class="subtotal">￥'+goods.subtotal+'</span>\n' +
+                    '                            </td>\n' +
+                    '                            <td>\n' +
+                    '                                <input type="button" width="100" value="删除" id = "deleteGood" onclick="deleteGood('+goods.product.pid+')">\n' +
+                    '                            </td>\n' +
+                    '                        </tr>'
+                t_lis+=tr
+            }
+            $("#goods").html(t_lis)
+
+            // 赠送积分: <em style="color:#ff6600;">596</em>&nbsp;
+            // 商品金额:<strong style="color:#ff6600;">￥596.00元</strong>
+            var ll = ""
+            ll+='赠送积分: <em style="color:#ff6600;">'+res.total+'</em>&nbsp;'
+            ll+='商品金额:<strong style="color:#ff6600;">￥'+res.total+'元</strong>'
+            $("#totalprice").html(ll)
+        })
+    }
+
+    function clearCart(){
+        $.get("cart/clearCart",{},function (){
+            getCart()
+        })
+    }
+    function deleteGood(pid){
+        $.post("cart/deleteGood",{pid,pid},function (){
+            getCart()
+        })
+    }
+
+</script>
 <body>
     <div id="header"></div>
     <div class="container">
@@ -43,8 +109,8 @@
 
             <div style="margin:0 auto; margin-top:10px;width:950px;">
                 <strong style="font-size:16px;margin:5px 0;">订单详情</strong>
-                <table class="table table-bordered">
-                    <tbody>
+                <table class="table table-bordered" >
+                    <tbody id = "goods">
                         <tr class="warning">
                             <th>图片</th>
                             <th>商品</th>
@@ -53,7 +119,7 @@
                             <th>小计</th>
                             <th>操作</th>
                         </tr>
-                        <tr class="active">
+                        <tr class="active" >
                             <td width="60" width="40%">
                                 <input type="hidden" name="id" value="22">
                                 <img src="./image/dadonggua.jpg" width="70" height="60">
@@ -78,23 +144,19 @@
                 </table>
             </div>
         </div>
-
         <div style="margin-right:130px;">
-            <div style="text-align:right;">
-                <em style="color:#ff6600;">
-                    登录后确认是否享有优惠&nbsp;&nbsp;
-                </em> 赠送积分: <em style="color:#ff6600;">596</em>&nbsp; 商品金额: <strong
-                    style="color:#ff6600;">￥596.00元</strong>
+            <div style="text-align:right;" id = "totalprice">
+                赠送积分: <em style="color:#ff6600;">596</em>&nbsp;
+                商品金额:<strong style="color:#ff6600;">￥596.00元</strong>
             </div>
             <div style="text-align:right;margin-top:10px;margin-bottom:10px;">
-                <a href="order_info.html" id="clear" class="clear">清空购物车</a>
+                <input type="button" width="100" value="清空购物车" id = "clearCart" onclick="clearCart()">
                 <a href="order_info.html">
                     <input type="submit" width="100" value="提交订单" name="submit" border="0" style="background: url('./images/register.gif') no-repeat scroll 0 0 rgba(0, 0, 0, 0);
 						height:35px;width:100px;color:white;">
                 </a>
             </div>
         </div>
-
     </div>
     <div id="footer"></div>
 </body>

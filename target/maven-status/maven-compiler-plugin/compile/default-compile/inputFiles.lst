@@ -3,6 +3,7 @@ D:\maven_workspace\Store\src\main\java\dao\UserDao.java
 D:\maven_workspace\Store\src\main\java\service\impl\CategoryServiceImpl.java
 D:\maven_workspace\Store\src\main\java\domain\OrderItem.java
 D:\maven_workspace\Store\src\main\java\domain\ResultInfo.java
+D:\maven_workspace\Store\src\main\java\util\BeanFactory.java
 D:\maven_workspace\Store\src\main\java\service\ProductService.java
 D:\maven_workspace\Store\src\main\java\util\UuidUtil.java
 D:\maven_workspace\Store\src\main\java\domain\PageBean.java
@@ -17,6 +18,7 @@ D:\maven_workspace\Store\src\main\java\service\CategoryService.java
 D:\maven_workspace\Store\src\main\java\service\impl\ProductServiceImpl.java
 D:\maven_workspace\Store\src\main\java\domain\Order.java
 D:\maven_workspace\Store\src\main\java\util\MailUtils.java
+D:\maven_workspace\Store\src\main\java\web\servlet\CartServlet.java
 D:\maven_workspace\Store\src\main\java\service\UserService.java
 D:\maven_workspace\Store\src\main\java\dao\impl\CategoryDaoImpl.java
 D:\maven_workspace\Store\src\main\java\domain\Product.java

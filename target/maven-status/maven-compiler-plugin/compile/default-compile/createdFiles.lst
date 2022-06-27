@@ -14,6 +14,7 @@ util\Md5Util.class
 domain\Product.class
 dao\CategoryDao.class
 domain\Order.class
+util\BeanFactory.class
 web\servlet\CategoryServlet.class
 web\servlet\BaseServlet.class
 util\UuidUtil.class
@@ -27,4 +28,5 @@ service\impl\CategoryServiceImpl.class
 web\servlet\IndexServlet.class
 domain\ResultInfo.class
 domain\User.class
+web\servlet\CartServlet.class
 web\servlet\UserServlet.class

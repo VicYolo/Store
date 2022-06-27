@@ -26,7 +26,6 @@
 </head>
 
 <script>
-	// 根据pid查找对应商品
 	$(function (){
 		// 获取pid
 		var pid = getParameter('pid')
@@ -52,16 +51,28 @@
 					'\t\t\t\t\t\t\t<input id="quantity" name="quantity" value="1" maxlength="4" size="10" type="text"> </div>\n' +
 					'\n' +
 					'\t\t\t\t\t\t<div style="margin:20px 0 10px 0;;text-align: center;">\n' +
-					'\t\t\t\t\t\t\t<a href="cart.html">\n' +
-					'\t\t\t\t\t\t\t\t<input style="background: url("./images/product.gif") no-repeat scroll 0 -600px rgba(0, 0, 0, 0);height:36px;width:127px;" value="加入购物车" type="button">\n' +
-					'\t\t\t\t\t\t\t</a>\n' +
+					'\t\t\t\t\t\t\t\t<input type="button" value="加入购物车" onclick="addToCart()">\n' +
 					'\t\t\t\t\t\t</div>\n' +
 					'\t\t\t\t\t</div>\n' +
 					'\t\t\t\t</div>'
 			$("#product").html(img+below)
 			$("#description").html(res.pdesc)
 		})
+
 	})
+
+	function addToCart(){
+		var pid = getParameter('pid')
+		var count = $("#quantity").val()
+		console.log(count)
+		$.post("cart/addToCart",{pid:pid,count:count},function (res){
+			if(res.flag){
+				alert("加入成功")
+			}else{
+				alert(res.errorMsg)
+			}
+		})
+	}
 </script>
 <body>
 	<div id="header"></div>
@@ -98,11 +109,8 @@
 							<input id="quantity" name="quantity" value="1" maxlength="4" size="10" type="text"> </div>
 
 						<div style="margin:20px 0 10px 0;;text-align: center;">
-							<a href="cart.html">
-								<input style="background: url('./images/product.gif') no-repeat scroll 0 -600px rgba(0, 0, 0, 0);height:36px;width:127px;" value="加入购物车" type="button">
-							</a>
+								<input value="加入购物车" type="button" onclick="addToCart()">
 						</div>
-					</div>
 				</div>
 			</div>
 

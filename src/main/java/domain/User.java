@@ -31,6 +31,20 @@ public class User {
 //
 //	private String code;
 
+	@Override
+	public String toString() {
+		return "User{" +
+				"uid='" + uid + '\'' +
+				", username='" + username + '\'' +
+				", password='" + password + '\'' +
+				", name='" + name + '\'' +
+				", email='" + email + '\'' +
+				", telephone='" + telephone + '\'' +
+				", birthday='" + birthday + '\'' +
+				", sex='" + sex + '\'' +
+				'}';
+	}
+
 	public String getUid() {
 		return uid;
 	}
