@@ -1,114 +1,117 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * 订单
- * @author Administrator
  *
+ * @author Administrator
  */
 public class Order {
-	/**
-	 * `oid` varchar(32) NOT NULL,
-		  `ordertime` datetime DEFAULT NULL,
-		  `total` double DEFAULT NULL,
-		  
-		  `state` int(11) DEFAULT NULL,
-		  `address` varchar(30) DEFAULT NULL,
-		  `name` varchar(20) DEFAULT NULL,
-		  
-		  `telephone` varchar(20) DEFAULT NULL,
-		  `uid` varchar(32) DEFAULT NULL,
-	 */
-	private String oid;
-	private Date ordertime;
-	private Double total;
-	
-	private Integer state;//订单状态 0:未付款	1:已付款	2:已发货	3.已完成
-	private String address;
-	private String name;
-	
-	private String telephone;
-	
-	//表示当前订单属于那个用户
-	private User user;
-	
-	//表示当前订单包含的订单项
-	private List<OrderItem> items = new ArrayList<>();
+    /**
+     * `oid` varchar(32) NOT NULL,
+     * `ordertime` datetime DEFAULT NULL,
+     * `total` double DEFAULT NULL,
+     * <p>
+     * `state` int(11) DEFAULT NULL,
+     * `address` varchar(30) DEFAULT NULL,
+     * `name` varchar(20) DEFAULT NULL,
+     * <p>
+     * `telephone` varchar(20) DEFAULT NULL,
+     * `uid` varchar(32) DEFAULT NULL,
+     */
+    private String oid;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08")
+    private Date ordertime;
+    private Double total;
 
-	public String getOid() {
-		return oid;
-	}
+    private Integer state;//订单状态 0:未付款	1:已付款	2:已发货	3.已完成
+    private String address;
+    private String name;
 
-	public void setOid(String oid) {
-		this.oid = oid;
-	}
+    private String telephone;
 
-	public Date getOrdertime() {
-		return ordertime;
-	}
+    //表示当前订单属于那个用户
+    private User user;
 
-	public void setOrdertime(Date ordertime) {
-		this.ordertime = ordertime;
-	}
+    //表示当前订单包含的订单项
+    private List<OrderItem> items = new ArrayList<>();
 
-	public Double getTotal() {
-		return total;
-	}
+    public String getOid() {
+        return oid;
+    }
 
-	public void setTotal(Double total) {
-		this.total = total;
-	}
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
 
-	public Integer getState() {
-		return state;
-	}
+    public Date getOrdertime() {
+        return ordertime;
+    }
 
-	public void setState(Integer state) {
-		this.state = state;
-	}
+    public void setOrdertime(Date ordertime) {
+        this.ordertime = ordertime;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public Double getTotal() {
+        return total;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setTotal(Double total) {
+        this.total = total;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Integer getState() {
+        return state;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setState(Integer state) {
+        this.state = state;
+    }
 
-	public String getTelephone() {
-		return telephone;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public List<OrderItem> getItems() {
-		return items;
-	}
+    public String getTelephone() {
+        return telephone;
+    }
 
-	public void setItems(List<OrderItem> items) {
-		this.items = items;
-	}
-	
-	
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
+    }
+
+
 }

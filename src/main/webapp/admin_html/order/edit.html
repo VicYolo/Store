@@ -1,0 +1,237 @@
+<!doctype html>
+<HTML>
+    <HEAD>
+        <meta http-equiv="Content-Language" content="zh-cn">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <LINK href="../../css/Style1.css" type="text/css" rel="stylesheet">
+
+        <script language="javascript" src="../../js/jquery-3.3.1.js"></script>
+        <script type="text/javascript">
+
+            function GetRequest() {
+                var url = location.search; //获取url中"?"符后的字串
+                // alert(url)
+                var theRequest = {};
+                if (url.indexOf("?") !== -1) {
+                    theRequest["oid"] = url.substr(5);
+                }
+                console.log(theRequest)
+                return theRequest;
+            }
+
+            function loadTable() {
+                var li = " <form id=\"userAction_save_do\" name=\"Form1\" method=\"post\">\n" +
+                    "<input type=\"hidden\" name=\"uid\"/>\n" +
+                    "<input type=\"hidden\" name=\"state\"/>\n" +
+                    "<input type=\"hidden\" name=\"code\"/>\n" +
+                    "&nbsp;\n" +
+                    "<table cellSpacing=\"1\" cellPadding=\"5\" width=\"100%\" align=\"center\" bgColor=\"#eeeeee\"\n" +
+                    "style=\"border: 1px solid #8ba7e3\" border=\"0\">\n" +
+                    "<tr>\n" +
+                    "<td class=\"ta_01\" align=\"center\" bgColor=\"#afd1f3\" colSpan=\"4\"\n" +
+                    "height=\"26\">\n"
+                return li
+            }
+
+            function loadProductTable() {
+                var li = "<table cellSpacing=\"1\" cellPadding=\"0\" width=\"100%\" align=\"center\" bgColor=\"#f5fafe\" border=\"0\" style=\"border: 1px solid #8ba7e3\" border=\"0\">\n" +
+                    "<TBODY>\n" +
+                    "<tr>\n" +
+                    "<td class=\"ta_01\" align=\"center\" bgColor=\"#afd1f3\">\n" +
+                    "<strong>所有商品</strong>\n" +
+                    "</td>\n" +
+                    "</tr>\n" +
+                    "<tr>\n" +
+                    "<td class=\"ta_01\" align=\"center\" bgColor=\"#f5fafe\">\n" +
+                    "<table cellspacing=\"0\" cellpadding=\"1\" rules=\"all\"\n" +
+                    "bordercolor=\"gray\" border=\"0\" id=\"DataGrid1\"\n" +
+                    "style=\"BORDER-RIGHT: gray 1px solid; BORDER-TOP: gray 1px solid; BORDER-LEFT: gray 1px solid; WIDTH: 100%; WORD-BREAK: break-all; BORDER-BOTTOM: gray 1px solid; BORDER-COLLAPSE: collapse; BACKGROUND-COLOR: #f5fafe; WORD-WRAP: break-word\">\n" +
+                    "<tr\n" +
+                    "style=\"FONT-WEIGHT: bold; FONT-SIZE: 12pt; HEIGHT: 25px; BACKGROUND-COLOR: #afd1f3\">\n" +
+                    "\n" +
+                    "<td align=\"center\" width=\"18%\">\n" +
+                    "序号\n" +
+                    "</td>\n" +
+                    "<td align=\"center\" width=\"17%\">\n" +
+                    "商品名称\n" +
+                    "</td>\n" +
+                    "<td align=\"center\" width=\"17%\">\n" +
+                    "商品图片\n" +
+                    "</td>\n" +
+                    "<td width=\"7%\" align=\"center\">\n" +
+                    "数量\n" +
+                    "</td>\n" +
+                    "<td width=\"7%\" align=\"center\">\n" +
+                    "商品价格\n" +
+                    "</td>\n" +
+                    "</tr>\n";
+                return li
+            }
+
+            $(function () {
+                //先解码
+                var result = GetRequest();
+                // var cname = encodeURIComponent(result.cname);//url解码
+                var oid = result.oid
+                $("#title").html("订单详情:" + decodeURIComponent(oid))
+                // alert("进入编辑")
+                $.post("../../adminOrderServlet/findByOid", {"oid": oid}, function (data) {
+                    var lis = loadTable()
+                    var li = "<strong id=\"title\"><STRONG>" +
+                        "订单详情(" + decodeURIComponent(oid) +
+                        ")</STRONG>\n" +
+                        "</strong>\n" +
+                        "</td>\n" +
+                        "</tr>\n" +
+                        "<tr>\n" +
+                        "<td width=\"18%\" align=\"center\" bgColor=\"#f5fafe\" class=\"ta_01\">\n" +
+                        "收货人\n" +
+                        "</td>\n" +
+                        "<td width=\"32%\" align=\"center\" class=\"ta_01\" bgColor=\"#ffffff\">\n" +
+                        data.name +
+                        "</td>\n" +
+                        "<td width=\"18%\" align=\"center\" bgColor=\"#f5fafe\" class=\"ta_01\">\n" +
+                        "下单时间\n" +
+                        "</td>\n" +
+                        "<td width=\"32%\" align=\"center\" class=\"ta_01\" bgColor=\"#ffffff\">\n" +
+                        data.ordertime +
+                        "</td>\n" +
+                        "</tr>\n" +
+                        "<tr>\n" +
+                        "<td width=\"18%\" align=\"center\" bgColor=\"#f5fafe\" class=\"ta_01\">\n" +
+                        "订单状态\n" +
+                        "</td>\n" +
+                        "<td width=\"32%\" align=\"center\" class=\"ta_01\" bgColor=\"#ffffff\">\n";
+                    switch (data.state) {
+                        case 0:
+                            li += "未付款"
+                            break
+                        case 1:
+                            li += "已付款"
+                            break
+                        case 2:
+                            li += "等待确认收货"
+                            break
+                        case 3:
+                            li += "订单完成"
+                            break
+                    }
+                    li += "</td>\n" +
+                        "<td width=\"18%\" align=\"center\" bgColor=\"#f5fafe\" class=\"ta_01\">\n" +
+                        "收获地址\n" +
+                        "</td>\n" +
+                        "<td width=\"32%\" align=\"center\" class=\"ta_01\" bgColor=\"#ffffff\">\n" +
+                        data.address +
+                        "</td>\n" +
+                        "</tr>\n" +
+                        "<tr>\n" +
+                        "<td width=\"18%\" align=\"center\" bgColor=\"#f5fafe\" class=\"ta_01\">\n" +
+                        "电话\n" +
+                        "</td>\n" +
+                        "<td width=\"32%\" align=\"center\" class=\"ta_01\" bgColor=\"#ffffff\">\n" +
+                        data.telephone +
+                        "</td>\n" +
+                        "<td width=\"18%\" align=\"center\" bgColor=\"#f5fafe\" class=\"ta_01\">\n" +
+                        "总金额\n" +
+                        "</td>\n" +
+                        "<td width=\"32%\" align=\"center\" class=\"ta_01\" bgColor=\"#ffffff\">\n" +
+                        data.total +
+                        "</td>\n" +
+                        "</tr>";
+                    lis += li
+
+
+                    //开始写商品
+                    lis += loadProductTable()
+
+                    var orderitems = data.items;
+
+                    for (var i = 0; i < orderitems.length; i++) {
+                        var li =
+                            "<tr onmouseover=\"this.style.backgroundColor = 'white'\" onmouseout=\"this.style.backgroundColor = '#F5FAFE';\">\n" +
+                            "<td align=\"center\" width=\"18%\">\n" +
+                            (i + 1) +
+                            "</td>\n" +
+                            "<td align=\"center\" width=\"17%\">" +
+                            orderitems[i].product.pname +
+                            "</td>\n" +
+                            "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\">\n" +
+                            "<img width=\"40\" height=\"45\" src=\"../../" +
+                            orderitems[i].product.pimage +
+                            "\">\n" +
+                            "</td>\n" +
+                            "\n" +
+                            "<td align=\"center\" width=\"18%\">" +
+                            orderitems[i].count +
+                            "</td>\n" +
+                            "<td align=\"center\" width=\"18%\">" +
+                            orderitems[i].subtotal +
+                            "</td>\n" +
+                            "</tr>";
+                        lis += li;
+                    }
+                    lis += "</table>\n" +
+                        "</td>\n" +
+                        "</tr>\n" +
+                        "</TBODY>\n" +
+                        "</table>"
+
+                    //可以发货
+                    if (data.state === 1) {
+                        lis += "<table width='100%'>" +
+                            " <tr align=\"center\">\n" +
+                            "<td class=\"ta_01\" style=\"WIDTH: 100%\" align=\"center\"\n" +
+                            "bgColor=\"#f5fafe\" colSpan=\"4\">\n" +
+                            "<button type=\"button\" id=\"userAction_edit_do_submit\" value=\"发货\" class=\"button_ok\" onclick='edit()'>" +
+                            "&#30830;&#23450;\n" +
+                            "</button>\n" +
+                            "<FONT face=\"宋体\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>\n" +
+                            " <INPUT class=\"button_ok\" type=\"button\" onclick=\"history.go(-1)\" value=\"返回\"/>\n" +
+                            "<span id=\"Label1\"></span>\n" +
+                            "</td>\n" +
+                            "</tr>\n" +
+                            "</table>\n" +
+                            "</form>"
+                    } else {
+                        lis += "<table width='100%'>" +
+                            " <tr align=\"center\">\n" +
+                            "<td class=\"ta_01\" style=\"WIDTH: 100%\" align=\"center\"\n" +
+                            "bgColor=\"#f5fafe\" colSpan=\"4\">\n" +
+                            " <INPUT class=\"button_ok\" type=\"button\" onclick=\"history.go(-1)\" value=\"返回\"/>\n" +
+                            "<span id=\"Label1\"></span>\n" +
+                            "</td>\n" +
+                            "</tr>\n" +
+                            "</table>\n" +
+                            "</form>"
+                    }
+                    /*                    document.getElementById("oid").value = data.oid;
+                                        document.getElementById("ordertime").value = data.ordertime;
+                                        document.getElementById("total").value = data.total;
+                                        document.getElementById("telephone").value = data.telephone;
+                                        document.getElementById("address").value = data.address;
+                                        document.getElementById("name").value = data.name;*/
+                    $("#tables").html(lis)
+                }, "json");
+            })
+
+            function edit() {
+                var result = GetRequest();
+                var oid = result.oid;
+
+                var oid = encodeURIComponent(oid)
+                // alert(category)
+                $.post("../../adminOrderServlet/edit", {"oid": oid}, function (data) {
+                    alert("发货成功")
+                    window.location.href = "list.html"
+                }, "text");
+            }
+
+        </script>
+    </HEAD>
+
+    <body>
+
+        <div id="tables"></div>
+
+    </body>
+</HTML>

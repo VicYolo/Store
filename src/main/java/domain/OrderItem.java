@@ -1,4 +1,7 @@
 package domain;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 订单项
  * @author Administrator
@@ -20,6 +23,7 @@ public class OrderItem {
 	private  Product product;
 	
 	//表示属于那个订单
+	@JsonIgnore
 	private  Order order;
 
 	public String getItemid() {
