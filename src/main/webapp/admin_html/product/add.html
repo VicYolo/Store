@@ -3,27 +3,109 @@
     <HEAD>
         <meta http-equiv="Content-Language" content="zh-cn">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <LINK href="${pageContext.request.contextPath}/css/Style1.css" type="text/css" rel="stylesheet">
+        <!--<LINK href="../../css/Style1.css" type="text/css" rel="stylesheet">-->
         <script language="javascript" src="../../js/jquery-3.3.1.js"></script>
         <script type="text/javascript">
             $(function () {
+                $.get("../../adminCategoryServlet/findAll", {}, function (data) {
+                    //遍历数组,拼接字符串()
+                    var lis
+                    for (var i = 0; i < data.length; i++) {
+                        var li = "<option>" +
+                            data[i].cname +
+                            "</option>\n"
+                        lis += li;
+                    }
+                    //将 lis 设置 html 内容中
+                    $("#category").html(lis)
+                }, "json");
                 $("#userAction_add_do_submit").click(function () {
                     var pname = $("#userAction_add_do_logonName").val()
                     var market_price = $("#userAction_add_do_price").val()
                     var shop_price = $("#userAction_add_do_ourprice").val()
+                    var is_hot = $("#sel-opt").val()
+                    var category = $("#category").val()
+                    var description = $("#description").val()
 
-                    // alert(category)
-                    $.post("../../adminCategoryServlet/save", {"category": category}, function (data) {
+                    //获取文件
+                    var fileInput = document.getElementById("file_upload")
+                    var file = fileInput.files[0]
+                    var filename = file.name
+
+                    var data = new FormData()
+                    data.append('file', file)
+                    data.append('pname', pname)
+                    data.append('market_price', market_price)
+                    data.append('shop_price', shop_price)
+                    data.append('is_hot', is_hot)
+                    data.append('cid', category)
+                    data.append('desc', description)
+
+                    $.ajax({
+                        type: "POST",
+                        data: data,
+                        url: '../../adminProductServlet/save',
+                        async: false,
+                        dataType: 'json',
+                        processData: false,   // 不处理发送的数据
+                        contentType: false,   // 不设置Content-Type请求头
+                        success: function (data) {
+                            if (data.flag) {
+                                alert("添加成功")
+                                window.location.href = "list.html"
+                            } else {
+                                alert(data.errorMsg)
+                            }
+                        }
+                    });
+
+
+                    /*$.post("../../addProductServlet", {
+                        "pname": pname,
+                        "market_price": market_price,
+                        "shop_price": shop_price,
+                        "is_hot": is_hot,
+                        "cid": category,
+                        "desc": description,
+                        "file": file
+                    }, function (data) {
                         if (data.flag) {
                             alert("添加成功")
                             window.location.href = "list.html"
                         } else {
                             alert(data.errorMsg)
                         }
-                    }, "json");
+                    }, "json");*/
                 })
 
             })
+
+
+            function displayImage() {
+                var fileInput = document.getElementById("file_upload");
+                var file = fileInput.files[0];
+                if (file.type.indexOf('image') < 0) {
+                    alert("请选中图片类型格式！");
+                    return;
+                }
+                if (file.type > 51200)//50kb
+                {
+                    alert("请上传小于50KB的文件！");
+                    return;
+                }
+                formFile.append("uploadFile", file); //加入文件对象
+                //创建读取文件的对象
+                var reader = new FileReader();
+                //创建文件读取相关的变量
+                var imgFile;
+                //为文件读取成功设置事件
+                reader.onload = function (e) {
+                    imgFile = e.target.result;
+                    $("#img").attr('src', imgFile);
+                };
+                //正式读取文件
+                reader.readAsDataURL(file);
+            }
         </script>
     </HEAD>
 
@@ -43,16 +125,16 @@
 
                 <tr>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        商品名称：
+                        商品名称
                     </td>
                     <td class="ta_01" bgColor="#ffffff">
                         <input type="text" name="pname" value="" id="userAction_add_do_logonName" class="bg"/>
                     </td>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        是否热门：
+                        是否热门
                     </td>
                     <td class="ta_01" bgColor="#ffffff">
-                        <select name="is_hot">
+                        <select name="is_hot" id="sel-opt">
                             <option value="1">是</option>
                             <option value="0">否</option>
                         </select>
@@ -60,13 +142,13 @@
                 </tr>
                 <tr>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        市场价格：
+                        市场价格
                     </td>
                     <td class="ta_01" bgColor="#ffffff">
                         <input type="text" name="market_price" value="" id="userAction_add_do_price" class="bg"/>
                     </td>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        商城价格：
+                        商城价格
                     </td>
                     <td class="ta_01" bgColor="#ffffff">
                         <input type="text" name="shop_price" value="" id="userAction_add_do_ourprice" class="bg"/>
@@ -74,34 +156,34 @@
                 </tr>
                 <tr>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        商品图片：
+                        商品图片
                     </td>
                     <td class="ta_01" bgColor="#ffffff" colspan="3">
-                        <input type="file" name="upload"/>
+                        <input type="file" name="upload" id="file_upload"/>
                     </td>
                 </tr>
                 <tr>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        所属分类：
+                        所属分类
                     </td>
                     <td class="ta_01" bgColor="#ffffff" colspan="3">
-                        <select name="cid">
+                        <select name="cid" id="category">
                             <option value=""></option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        商品描述：
+                        商品描述
                     </td>
                     <td class="ta_01" bgColor="#ffffff" colspan="3">
-                        <textarea name="pdesc" rows="5" cols="30"></textarea>
+                        <textarea name="pdesc" rows="5" cols="30" id="description"></textarea>
                     </td>
                 </tr>
                 <tr>
                     <td class="ta_01" style="WIDTH: 100%" align="center"
                         bgColor="#f5fafe" colSpan="4">
-                        <button type="submit" id="userAction_add_do_submit" value="确定" class="button_ok">
+                        <button type="button" id="userAction_add_do_submit" value="确定" class="button_ok">
                             &#30830;&#23450;
                         </button>
 

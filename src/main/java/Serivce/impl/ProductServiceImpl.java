@@ -17,7 +17,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean save(Product product) {
-        return false;
+        //如果没有重复
+        if (productDao.findByPname(product.getPname()) == null) {
+            productDao.save(product);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

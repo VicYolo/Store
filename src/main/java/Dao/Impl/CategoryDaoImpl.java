@@ -14,7 +14,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public List<Category> findAll() {
-        String sql = "select * from category";
+        String sql = "select * from category order by cid";
         return template.query(sql, new BeanPropertyRowMapper<Category>(Category.class));
     }
 

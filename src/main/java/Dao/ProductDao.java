@@ -14,5 +14,5 @@ public interface ProductDao {
 
     public void edit(Product product);
 
-    public Product findByCname(String cname);
+    public Product findByPname(String cname);
 }

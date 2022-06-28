@@ -41,9 +41,6 @@
                     "商品名称\n" +
                     "</td>\n" +
                     "<td align=\"center\" width=\"10%\">\n" +
-                    "市场价格\n" +
-                    "</td>\n" +
-                    "<td align=\"center\" width=\"10%\">\n" +
                     "商品价格\n" +
                     "</td>\n" +
                     "<td align=\"center\" width=\"10%\">\n" +
@@ -52,11 +49,14 @@
                     "<td align=\"center\" width=\"10%\">\n" +
                     "是否热门\n" +
                     "</td>\n" +
+                    "<td align=\"center\" width=\"10%\">\n" +
+                    "是否上架\n" +
+                    "</td>\n" +
                     "<td width=\"10%\" align=\"center\">\n" +
                     "编辑\n" +
                     "</td>\n" +
                     "<td width=\"10%\" align=\"center\">\n" +
-                    "删除\n" +
+                    "下架\n" +
                     "</td>\n" +
                     "</tr>";
                 return lis
@@ -69,6 +69,7 @@
                     //遍历数组,拼接字符串()
                     for (var i = 0; i < data.length; i++) {
                         console.log(data[i]["pname"]);
+                        console.log(data[i].pflag)
                         var li = "<tr onmouseover=\"this.style.backgroundColor = 'white'\" onmouseout=\"this.style.backgroundColor = '#F5FAFE';\">\n" +
                             "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\" width=\"10%\">" +
                             (i + 1) +
@@ -81,9 +82,6 @@
                             "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\" width=\"20%\">" +
                             data[i].pname +
                             "</td>\n" +
-                            "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\" width=\"10%\">" +
-                            data[i].market_price +
-                            "</td>\n" +
                             "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\" width=\"10%\">\n" +
                             data[i].shop_price +
                             "</td>\n" +
@@ -92,6 +90,13 @@
                             "</td>\n" +
                             "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\" width=\"10%\">\n";
                         if (data[i].is_hot === 1) {
+                            li += "是"
+                        } else {
+                            li += "否"
+                        }
+                        li += "</td>\n" +
+                            "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\" width=\"10%\">";
+                        if (data[i].pflag === 0) {
                             li += "是"
                         } else {
                             li += "否"
@@ -131,7 +136,7 @@
             }
 
             /**
-             * 点击删除按钮删除商品
+             * 点击删除按钮下架商品
              */
             function del(obj) {
                 var tr = obj.parentNode.parentNode;
@@ -139,7 +144,7 @@
                 alert(pname)
                 pname = encodeURIComponent(pname);//url编码
                 $.get("../../adminProductServlet/delete", {"pname": pname}, function (data) {
-                    alert("删除成功")
+                    alert("下架成功")
                     window.location.href = "list.html"
                 }, "text")
             }

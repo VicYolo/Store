@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface ProductService {
     public List<Product> findAll();
+
     public boolean save(Product product);
+
     public void delete(String cname);
-    public boolean edit(String oldCname,String newCname);
+
+    public boolean edit(String oldCname, String newCname);
 }

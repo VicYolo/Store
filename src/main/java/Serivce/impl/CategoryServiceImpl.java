@@ -54,4 +54,11 @@ public class CategoryServiceImpl implements CategoryService {
             return false;
         }
     }
+
+    @Override
+    public Category findByCname(String cname) {
+        return categoryDao.findByCname(cname);
+    }
+
+
 }

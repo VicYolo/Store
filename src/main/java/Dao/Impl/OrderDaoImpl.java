@@ -17,7 +17,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> findAll() {
-        String sql = "select * from orders";
+        String sql = "select * from orders order by state";
         return template.query(sql, new BeanPropertyRowMapper<Order>(Order.class));
     }
 

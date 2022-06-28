@@ -1,5 +1,7 @@
 import Dao.Impl.ProductDaoImpl;
 import Dao.ProductDao;
+import Serivce.ProductService;
+import Serivce.impl.ProductServiceImpl;
 import domain.Category;
 import domain.Product;
 import org.junit.Test;
@@ -16,4 +18,15 @@ public class ProductDaoImplTest {
             System.out.println(c.getPname());
         }
     }
+
+    @Test
+    public void testFindByPname() {
+        ProductDao productDao = new ProductDaoImpl();
+        Product product = productDao.findByPname("白菜");
+        //System.out.println(product.getPid());
+        ProductService productService = new ProductServiceImpl();
+        System.out.println(productService.save(product));
+    }
+
+
 }
