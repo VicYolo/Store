@@ -6,6 +6,8 @@
         <!--<LINK href="../../css/Style1.css" type="text/css" rel="stylesheet">-->
         <script language="javascript" src="../../js/jquery-3.3.1.js"></script>
         <script type="text/javascript">
+
+
             $(function () {
                 $.get("../../adminCategoryServlet/findAll", {}, function (data) {
                     //遍历数组,拼接字符串()
@@ -19,6 +21,8 @@
                     //将 lis 设置 html 内容中
                     $("#category").html(lis)
                 }, "json");
+
+
                 $("#userAction_add_do_submit").click(function () {
                     var pname = $("#userAction_add_do_logonName").val()
                     var market_price = $("#userAction_add_do_price").val()
@@ -39,7 +43,7 @@
                     data.append('shop_price', shop_price)
                     data.append('is_hot', is_hot)
                     data.append('cid', category)
-                    data.append('desc', description)
+                    data.append('pdesc', description)
 
                     $.ajax({
                         type: "POST",
@@ -58,54 +62,9 @@
                             }
                         }
                     });
-
-
-                    /*$.post("../../addProductServlet", {
-                        "pname": pname,
-                        "market_price": market_price,
-                        "shop_price": shop_price,
-                        "is_hot": is_hot,
-                        "cid": category,
-                        "desc": description,
-                        "file": file
-                    }, function (data) {
-                        if (data.flag) {
-                            alert("添加成功")
-                            window.location.href = "list.html"
-                        } else {
-                            alert(data.errorMsg)
-                        }
-                    }, "json");*/
                 })
 
             })
-
-
-            function displayImage() {
-                var fileInput = document.getElementById("file_upload");
-                var file = fileInput.files[0];
-                if (file.type.indexOf('image') < 0) {
-                    alert("请选中图片类型格式！");
-                    return;
-                }
-                if (file.type > 51200)//50kb
-                {
-                    alert("请上传小于50KB的文件！");
-                    return;
-                }
-                formFile.append("uploadFile", file); //加入文件对象
-                //创建读取文件的对象
-                var reader = new FileReader();
-                //创建文件读取相关的变量
-                var imgFile;
-                //为文件读取成功设置事件
-                reader.onload = function (e) {
-                    imgFile = e.target.result;
-                    $("#img").attr('src', imgFile);
-                };
-                //正式读取文件
-                reader.readAsDataURL(file);
-            }
         </script>
     </HEAD>
 

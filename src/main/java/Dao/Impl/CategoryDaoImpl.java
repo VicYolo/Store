@@ -76,5 +76,12 @@ public class CategoryDaoImpl implements CategoryDao {
 
     }
 
+    @Override
+    public Category findByCid(String cid) {
+        String sql = "select * from category where cid = ?";
+        Category category = template.queryForObject(sql, new BeanPropertyRowMapper<Category>(Category.class), cid);
+        return category;
+    }
+
 
 }

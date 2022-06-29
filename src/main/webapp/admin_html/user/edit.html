@@ -27,12 +27,12 @@
                 $("#title").html("查看用户详情:" + decodeURIComponent(uname))
                 // alert("进入编辑")
                 $.post("../../adminUserServlet/findByUsername", {"uname": uname}, function (data) {
-                    document.getElementById("name").value = data.name;
-                    document.getElementById("password").value = data.password;
-                    document.getElementById("email").value = data.email;
-                    document.getElementById("telephone").value = data.telephone;
-                    document.getElementById("birth").value = data.birthday;
-                    document.getElementById("sex").value = data.sex;
+                    document.getElementById("name").innerHTML = data.name;
+                    document.getElementById("password").innerHTML = data.password;
+                    document.getElementById("email").innerHTML = data.email;
+                    document.getElementById("telephone").innerHTML = data.telephone;
+                    document.getElementById("birth").innerHTML = data.birthday;
+                    document.getElementById("sex").innerHTML = data.sex;
                 }, "json");
             })
 
@@ -58,44 +58,38 @@
 
                 <tr>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        用户姓名：
+                        用户姓名
                     </td>
-                    <td class="ta_01" bgColor="#ffffff">
-                        <input readonly="readonly" type="text" name="name" id="name" class="bg"/>
+                    <td class="ta_01" align="center" bgColor="#ffffff" id="name">
                     </td>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        密码：
+                        密码
                     </td>
-                    <td class="ta_01" bgColor="#ffffff">
-                        <input readonly="readonly" type="text" name="password" id="password" class="bg"/>
+                    <td class="ta_01" align="center" bgColor="#ffffff" id="password">
                     </td>
                 </tr>
                 <tr>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        性别：
+                        性别
                     </td>
-                    <td class="ta_01" bgColor="#ffffff">
-                        <input readonly="readonly" type="text" name="sex" id="sex" class="bg"/>
+                    <td class="ta_01" align="center" bgColor="#ffffff" id="sex">
                     </td>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        出生日期：
+                        出生日期
                     </td>
-                    <td class="ta_01" bgColor="#ffffff">
-                        <input readonly="readonly" type="text" name="birth" id="birth" class="bg"/>
+                    <td class="ta_01" align="center" bgColor="#ffffff" id="birth">
                     </td>
                 </tr>
                 <tr>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        电话：
+                        电话
                     </td>
-                    <td class="ta_01" bgColor="#ffffff">
-                        <input readonly="readonly" type="text" name="phone" id="telephone" class="bg"/>
+                    <td class="ta_01" align="center" bgColor="#ffffff" id="telephone">
                     </td>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        邮箱：
+                        邮箱
                     </td>
-                    <td class="ta_01" bgColor="#ffffff">
-                        <input readonly="readonly" type="text" name="email" id="email" class="bg"/>
+                    <td class="ta_01" align="center" bgColor="#ffffff" id="email">
                     </td>
                 </tr>
 

@@ -3,11 +3,14 @@ package Dao.Impl;
 import Dao.ProductDao;
 import domain.Category;
 import domain.Product;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import util.JDBCUtils;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class ProductDaoImpl implements ProductDao {
 
@@ -37,15 +40,37 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public void edit(Product product) {
-
+    public void edit(Product product, boolean flag) {
+        String sql = "update product set pname = ?, market_price = ?, shop_price = ?, " +
+                "is_hot = ?, pdesc = ?, cid = ?, pflag = 0,pdate = ? where pid = ?";
+        template.update(sql, product.getPname(), product.getMarket_price(), product.getShop_price(),
+                product.getIs_hot(), product.getPdesc(), product.getCategory().getCid(),
+                product.getPdate(), product.getPid());
+        if (flag) {
+            String sqll = "update product set pimage = ? where pid = ?";
+            template.update(sqll, product.getPimage(), product.getPid());
+        }
     }
 
     @Override
     public Product findByPname(String pname) {
         String sql = "select * from product where pname = ?";
         try {
-            Product product = template.queryForObject(sql, new BeanPropertyRowMapper<Product>(Product.class), pname);
+            Map<String, Object> map = template.queryForMap(sql, pname);
+            Product product = new Product();
+            Category category = new Category();
+            BeanUtils.populate(product, map);
+            //product.setPid((String) map.get("pid"));
+            //product.setPname((String) map.get("pname"));
+            //product.setPimage((String) map.get("pimage"));
+            //product.setPdate((Date) map.get("pdate"));
+            //product.setPflag((Integer) map.get("pflag"));
+            //product.setIs_hot((Integer) map.get("is_hot"));
+            //product.setMarket_price((Double) map.get("market_price"));
+            //product.setShop_price((Double) map.get("shop_price"));
+            //product.setPdesc((String) map.get("pdesc"));
+            category.setCid((String) map.get("cid"));
+            product.setCategory(category);
             return product;
         } catch (Exception e) {
             return null;

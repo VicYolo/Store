@@ -3,6 +3,110 @@
     <HEAD>
         <meta http-equiv="Content-Language" content="zh-cn">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script language="javascript" src="../../js/jquery-3.3.1.js"></script>
+        <script type="text/javascript">
+            function GetRequest() {
+                var url = location.search; //获取url中"?"符后的字串
+                // alert(url)
+                var theRequest = {};
+                if (url.indexOf("?") !== -1) {
+                    theRequest["pname"] = url.substr(7);
+                }
+                console.log(theRequest)
+                return theRequest;
+            }
+
+
+            $(function () {
+
+                var oldpname = GetRequest().pname
+                //加载类别
+                $.get("../../adminCategoryServlet/findAll", {}, function (data) {
+                    var lis
+                    for (var i = 0; i < data.length; i++) {
+                        console.log(data[i].cname)
+                        var li = "<option>" +
+                            data[i].cname +
+                            "</option>\n"
+                        lis += li;
+                    }
+                    //将 lis 设置 html 内容中
+                    $("#category").html(lis)
+                }, "json");
+
+                //初始化数据
+                $.get("../../adminProductServlet/findByPname", {"pname": oldpname}, function (data) {
+                    console.log(data.pname)
+                    document.getElementById("pname").value = data.pname
+                    document.getElementById("market_price").value = data.market_price
+                    document.getElementById("shop_price").value = data.shop_price
+                    var hot = document.getElementById("is_hot")
+                    if (data.is_hot === 1)
+                        hot.options[0].selected = true
+                    else
+                        hot.options[1].selected = true
+                    var category = document.getElementById("category")
+                    for (var i = 0; i < category.length; i++) {
+                        if (category.options[i].innerHTML == data.category.cname) {
+                            category.options[i].selected = true;
+                        }
+                    }
+                    // document.getElementById("market_price").innerHTML = data.market_price
+                    document.getElementById("desc").value = data.pdesc
+                    // document.getElementById("market_price").innerHTML = data.market_price
+
+                }, "json");
+
+
+                $("#userAction_edit_do_submit").click(function () {
+                    // alert(123)
+                    var pname = $("#pname").val()
+                    var market_price = $("#market_price").val()
+                    var shop_price = $("#shop_price").val()
+                    var is_hot = $("#is_hot").val()
+                    var category = $("#category").val()
+                    var description = $("#desc").val()
+
+                    var data = new FormData()
+
+
+                    //修改了文件
+                    if (document.getElementById("file_upload").value !== '') {
+                        var fileInput = document.getElementById("file_upload")
+                        var file = fileInput.files[0]
+                        var filename = file.name
+                        data.append('file', file)
+                    }
+
+                    data.append('pname', pname)
+                    data.append('oldpname', oldpname)
+                    data.append('market_price', market_price)
+                    data.append('shop_price', shop_price)
+                    data.append('is_hot', is_hot)
+                    data.append('cid', category)
+                    data.append('pdesc', description)
+
+                    $.ajax({
+                        type: "POST",
+                        data: data,
+                        url: '../../adminProductServlet/edit',
+                        async: false,
+                        dataType: 'json',
+                        processData: false,   // 不处理发送的数据
+                        contentType: false,   // 不设置Content-Type请求头
+                        success: function (data) {
+                            if (data.flag) {
+                                alert("编辑成功")
+                                window.location.href = "list.html"
+                            } else {
+                                alert(data.errorMsg)
+                            }
+                        }
+                    });
+                })
+
+            })
+        </script>
     </HEAD>
 
     <body>
@@ -17,24 +121,24 @@
                 <tr>
                     <td class="ta_01" align="center" bgColor="#afd1f3" colSpan="4"
                         height="26">
-                        <strong><STRONG>编辑商品</STRONG>
+                        <strong><STRONG>商品详情与编辑</STRONG>
                         </strong>
                     </td>
                 </tr>
 
                 <tr>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        商品名称：
+                        商品名称
                     </td>
                     <td class="ta_01" bgColor="#ffffff">
-                        <input type="text" name="pname" value="" id="userAction_edit_do_logonName" class="bg"/>
+                        <input type="text" name="pname" value="" id="pname" class="bg"/>
                     </td>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        是否热门：
+                        是否热门
                     </td>
                     <td class="ta_01" bgColor="#ffffff">
 
-                        <select name="is_hot">
+                        <select name="is_hot" id="is_hot">
                             <option value="1">是</option>
                             <option value="0">否</option>
                         </select>
@@ -42,55 +146,50 @@
                 </tr>
                 <tr>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        市场价格：
+                        市场价格
                     </td>
                     <td class="ta_01" bgColor="#ffffff">
-                        <input type="text" name="market_price" value="" id="userAction_edit_do_price" class="bg"/>
+                        <input type="text" name="market_price" value="" id="market_price" class="bg"/>
                     </td>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        商城价格：
+                        商城价格
                     </td>
                     <td class="ta_01" bgColor="#ffffff">
-                        <input type="text" name="shop_price" value="" id="userAction_edit_do_ourprice" class="bg"/>
+                        <input type="text" name="shop_price" value="" id="shop_price" class="bg"/>
                     </td>
                 </tr>
                 <tr>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        商品图片：
+                        商品图片
                     </td>
                     <td class="ta_01" bgColor="#ffffff" colspan="3">
-                        <input type="file" name="upload"/>
+                        <input type="file" name="upload" id="file_upload"/>
                     </td>
                 </tr>
                 <tr>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        所属分类：
+                        所属分类
                     </td>
                     <td class="ta_01" bgColor="#ffffff" colspan="3">
-                        <select name="categorySecond.csid">
-
-                            <option value=""></option>
+                        <select name="categorySecond.csid" id="category">
 
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td width="18%" align="center" bgColor="#f5fafe" class="ta_01">
-                        商品描述：
+                        商品描述
                     </td>
                     <td class="ta_01" bgColor="#ffffff" colspan="3">
-                        <textarea name="pdesc" rows="5" cols="30"></textarea>
+                        <textarea name="pdesc" rows="5" cols="30" id="desc"></textarea>
                     </td>
                 </tr>
                 <tr>
                     <td class="ta_01" style="WIDTH: 100%" align="center"
                         bgColor="#f5fafe" colSpan="4">
-                        <button type="submit" id="userAction_save_do_submit" value="确定" class="button_ok">
+                        <button type="button" id="userAction_edit_do_submit" value="确定" class="button_ok">
                             &#30830;&#23450;
                         </button>
-
-                        <FONT face="宋体">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
-                        <button type="reset" value="重置" class="button_cancel">&#37325;&#32622;</button>
 
                         <FONT face="宋体">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
                         <INPUT class="button_ok" type="button" onclick="history.go(-1)" value="返回"/>

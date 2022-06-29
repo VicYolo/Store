@@ -12,5 +12,7 @@ public interface ProductService {
 
     public void delete(String cname);
 
-    public boolean edit(String oldCname, String newCname);
+    public boolean edit(Product product, boolean flag);
+
+    public Product findByPname(String pname);
 }

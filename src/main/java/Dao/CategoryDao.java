@@ -14,4 +14,6 @@ public interface CategoryDao {
     public void edit(Category category);
 
     public Category findByCname(String cname);
+
+    public Category findByCid(String cid);
 }

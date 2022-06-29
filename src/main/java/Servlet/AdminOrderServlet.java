@@ -61,6 +61,13 @@ public class AdminOrderServlet extends BaseServlet {
 
     }
 
+    /**
+     * 后台初始化查询订单信息
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     public void findByOid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //1获取数据内容
         request.setCharacterEncoding("utf-8");

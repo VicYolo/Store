@@ -5,6 +5,7 @@ import Serivce.ProductService;
 import Serivce.impl.CategoryServiceImpl;
 import Serivce.impl.ProductServiceImpl;
 import domain.Category;
+import domain.Order;
 import domain.Product;
 import domain.ResultInfo;
 import org.apache.commons.beanutils.BeanUtils;
@@ -139,6 +140,107 @@ public class AdminProductServlet extends BaseServlet {
 
         }
 
+
+    }
+
+    /**
+     * 后台编辑商品
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void edit(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        //上传图片
+        DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
+        diskFileItemFactory.setSizeThreshold(3 * 1024 * 1024);
+        ServletFileUpload fileUpload = new ServletFileUpload(diskFileItemFactory);
+        fileUpload.setHeaderEncoding("UTF-8");
+        List<FileItem> list = fileUpload.parseRequest(request);
+        Map<String, String> map = new HashMap<String, String>();
+        String filename = null;
+        String cname = null;
+        String oldpname = null;
+        int count = 0;
+        boolean pic = false;
+        for (FileItem fileItem : list) {
+            if (fileItem.isFormField()) {
+                //若不是图片
+                String name = fileItem.getFieldName();
+                String value = fileItem.getString("UTF-8");
+                System.out.println(name + "   " + value);
+                if (name.equals("cid"))
+                    cname = value;
+                if (name.equals("oldpname"))
+                    oldpname = URLDecoder.decode(value, "utf-8");//解码
+                map.put(name, value);
+                count++;
+            } else {
+                //若是图片
+                filename = fileItem.getName();
+                System.out.println("文件名: " + filename);
+                InputStream inputStream = fileItem.getInputStream();
+                String path = this.getServletContext().getRealPath("/products/1");
+                OutputStream outputStream = new FileOutputStream(path + "/" + filename);
+                IOUtils.copy(inputStream, outputStream);
+                pic = true;
+            }
+
+            Product product = new Product();
+            //封装数据
+            BeanUtils.populate(product, map);
+            product.setPdate(new Date());
+            product.setPflag(0);
+            product.setPimage("products/1/" + filename);
+
+            if (count == 7) {
+                //System.out.println("cname = " + cname);
+                Category category = categoryService.findByCname(cname);
+
+                Product oldProduct = productService.findByPname(oldpname);
+                product.setCategory(category);
+                product.setPid(oldProduct.getPid());
+                //System.out.println(category.getCname());
+                boolean flag = productService.edit(product, pic);
+                ResultInfo resultInfo = new ResultInfo();
+                resultInfo.setFlag(flag);
+                System.out.println("flag = " + flag);
+                if (!flag) {
+                    resultInfo.setErrorMsg("编辑失败，输入名称有重复");
+                }
+                writeBackInfoJson(response, resultInfo);
+            }
+            //System.out.println(category.getCname());
+            //System.out.println(category.getCid());
+
+
+        }
+
+
+    }
+
+    /**
+     * 后台初始化商品信息
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void findByPname(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //1获取数据内容
+        request.setCharacterEncoding("utf-8");
+        String pname = request.getParameter("pname");
+        System.out.println("解码前：" + pname);
+        pname = URLDecoder.decode(pname, "utf-8");
+        System.out.println("解码后：" + pname);
+        //3调用service查询
+        Product product = productService.findByPname(pname);
+        //Order order = orderService.findByOid(oid);
+        //
+        writeBackInfoJson(response, product);
 
     }
 

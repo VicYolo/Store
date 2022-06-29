@@ -23,10 +23,9 @@ public class ProductDaoImplTest {
     public void testFindByPname() {
         ProductDao productDao = new ProductDaoImpl();
         Product product = productDao.findByPname("白菜");
-        //System.out.println(product.getPid());
-        ProductService productService = new ProductServiceImpl();
-        System.out.println(productService.save(product));
+        System.out.println(product.getCategory().getCname());
+        //ProductService productService = new ProductServiceImpl();
+        //System.out.println(productService.save(product));
     }
-
 
 }
