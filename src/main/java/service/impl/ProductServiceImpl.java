@@ -2,6 +2,8 @@ package service.impl;
 
 import dao.CategoryDao;
 import dao.impl.CategoryDaoImpl;
+import domain.Order;
+import domain.PageBean;
 import domain.Product;
 import service.ProductService;
 
@@ -24,5 +26,20 @@ public class ProductServiceImpl implements ProductService {
         Product bypid = categoryDao.findBypid(pid);
 //        System.out.println(bypid);
         return bypid;
+    }
+
+    @Override
+    public PageBean<Product> findByCid(String cid,int curpage, int pagesize) {
+        PageBean<Product> res = new PageBean<>();
+        res.setPageNumber(curpage);
+        res.setPageSize(pagesize);
+        res.setStartIndex((curpage-1)*pagesize);
+        int totalcount = categoryDao.findTotalNumByCid(cid);
+        res.setTotalRecord(totalcount);
+        int totalpage = totalcount/pagesize==0?(totalcount/pagesize):(totalcount/pagesize+1);
+        res.setTotalPage(totalpage);
+        List<Product> products = categoryDao.findByCid(cid,res.getStartIndex(),pagesize);
+        res.setData(products);
+        return res;
     }
 }

@@ -7,6 +7,7 @@
     <title>会员登录</title>
     <link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css" />
     <script src="./js/jquery-1.11.3.min.js" type="text/javascript"></script>
+    <script src="js/jquery-3.3.1.js" type="text/javascript"></script>
     <script src="./js/bootstrap.min.js" type="text/javascript"></script>
     <!-- 引入自定义css文件 style.css -->
     <link rel="stylesheet" href="./css/style.css" type="text/css" />
@@ -39,10 +40,14 @@
     // 请求该用户账单
     $(function (){
         getCart()
+        $("#creatOrder").click(function (){
+            $.get("order/save",{},function (){
+                location.href = "order_info.html"
+            })
+        })
     })
     function getCart(){
         $.get("cart/getCart",{},function (res){
-            console.log(res)
             var th = '<tr class="warning">\n' +
                 '                            <th>图片</th>\n' +
                 '                            <th>商品</th>\n' +
@@ -101,6 +106,8 @@
         })
     }
 
+
+
 </script>
 <body>
     <div id="header"></div>
@@ -151,10 +158,11 @@
             </div>
             <div style="text-align:right;margin-top:10px;margin-bottom:10px;">
                 <input type="button" width="100" value="清空购物车" id = "clearCart" onclick="clearCart()">
-                <a href="order_info.html">
-                    <input type="submit" width="100" value="提交订单" name="submit" border="0" style="background: url('./images/register.gif') no-repeat scroll 0 0 rgba(0, 0, 0, 0);
-						height:35px;width:100px;color:white;">
-                </a>
+<!--                <a href="#">-->
+<!--                    <input type="button" width="100" value="提交订单" id="creatOrder" border="0" style="background: url('./images/register.gif') no-repeat scroll 0 0 rgba(0, 0, 0, 0);-->
+<!--						height:35px;width:100px;color:white;">-->
+<!--                </a>-->
+                <input type="button" width="100" value="提交订单" id = "creatOrder">
             </div>
         </div>
     </div>

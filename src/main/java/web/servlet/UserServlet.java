@@ -87,4 +87,8 @@ public class UserServlet extends BaseServlet{
         User user = (User) req.getSession().getAttribute("user");
         this.writeBackInfoJson(resp,user);
     }
+
+    public void logout(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.getSession().invalidate();
+    }
 }

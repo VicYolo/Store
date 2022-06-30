@@ -24,7 +24,135 @@
 		}
 	</style>
 </head>
+<script>
+	$(function(){
+		queryData(1)
+	})
+	function queryData(curpage){
+		$.post("order/showMyOrder",{curpage:curpage},function (res){
+			// console.log(res.totalPage + "   " + curpage)
+			// 成功拿到数据
+			console.log(res)
+			// 对数据进行展示
+			// 数据项展示
+			var pagesize = 3 //默认
+			var orders = res.data
+			var order_liss = ""
+			var state_lis = ["未付款","已付款","已发货","已完成"]
+			for(var i=0;i<orders.length;i++){
+				var order = orders[i]
+				console.log(state_lis[order.state])
+				var lis_head =""
+				if(order.state==0){
+					lis_head='<tr class="success">\n' +
+							'\t\t\t\t\t\t\t<th colspan="2">订单编号:'+order.oid+' </th>\n' +
+							'\t\t\t\t\t\t\t<th colspan="1"><a href="order_info.html?oid='+order.oid+'">未付款</a> </th>\n' +
+							'\t\t\t\t\t\t\t<th colspan="2">金额：￥'+order.total+'</th>\n' +
+							'\t\t\t\t\t\t</tr>\n' +
+							'\t\t\t\t\t\t<tr class="warning">\n' +
+							'\t\t\t\t\t\t\t<th>图片</th>\n' +
+							'\t\t\t\t\t\t\t<th>商品</th>\n' +
+							'\t\t\t\t\t\t\t<th>价格</th>\n' +
+							'\t\t\t\t\t\t\t<th>数量</th>\n' +
+							'\t\t\t\t\t\t\t<th>小计</th>\n' +
+							'\t\t\t\t\t\t</tr>'
+				}else{
+					lis_head= '<tr class="success">\n' +
+							'\t\t\t\t\t\t\t<th colspan="2">订单编号:'+order.oid+' </th>\n' +
+							'\t\t\t\t\t\t\t<th colspan="1">'+state_lis[order.state]+'</th>\n' +
+							'\t\t\t\t\t\t\t<th colspan="2">金额：￥'+order.total+'</th>\n' +
+							'\t\t\t\t\t\t</tr>\n' +
+							'\t\t\t\t\t\t<tr class="warning">\n' +
+							'\t\t\t\t\t\t\t<th>图片</th>\n' +
+							'\t\t\t\t\t\t\t<th>商品</th>\n' +
+							'\t\t\t\t\t\t\t<th>价格</th>\n' +
+							'\t\t\t\t\t\t\t<th>数量</th>\n' +
+							'\t\t\t\t\t\t\t<th>小计</th>\n' +
+							'\t\t\t\t\t\t</tr>'
+				}
 
+				var lis_body = ""
+				for (var j=0;j<order.items.length;j++){
+					var item = order.items[j]
+					var ll = '<tr class="active">\n' +
+							'\t\t\t\t\t\t\t<td width="60" width="40%">\n' +
+							'\t\t\t\t\t\t\t\t<input type="hidden" name="id" value="22">\n' +
+							'\t\t\t\t\t\t\t\t<img src="'+item.product.pimage+'" width="70" height="60">\n' +
+							'\t\t\t\t\t\t\t</td>\n' +
+							'\t\t\t\t\t\t\t<td width="30%">\n' +
+							'\t\t\t\t\t\t\t\t<a target="_blank"> '+item.product.pname+'</a>\n' +
+							'\t\t\t\t\t\t\t</td>\n' +
+							'\t\t\t\t\t\t\t<td width="20%">\n' +
+							'\t\t\t\t\t\t\t\t￥'+item.product.shop_price+'\n' +
+							'\t\t\t\t\t\t\t</td>\n' +
+							'\t\t\t\t\t\t\t<td width="10%">\n' +
+							'\t\t\t\t\t\t\t\t'+item.count+'\n' +
+							'\t\t\t\t\t\t\t</td>\n' +
+							'\t\t\t\t\t\t\t<td width="15%">\n' +
+							'\t\t\t\t\t\t\t\t<span class="subtotal">￥'+item.subtotal+'</span>\n' +
+							'\t\t\t\t\t\t\t</td>\n' +
+							'\t\t\t\t\t\t</tr>'
+					lis_body += ll
+				}
+				order_liss += (lis_head+lis_body)
+			}
+			$("#orders").html(order_liss)
+			// 分页项展示
+			var totalpage = res.totalPage
+			console.log(totalpage)
+			// var totalpage =100   测试分页所用
+			var start,end
+			if(totalpage<10){
+				start = 1
+				end = totalpage
+			}else{
+				start = curpage - 4
+				end = curpage + 4
+				if(start<1){
+					start = 1
+					end = 9
+				}else if(end>totalpage){
+					end = totalpage
+					start = totalpage - 8
+				}
+			}
+			var pagelis = ""
+			if(curpage==1){
+				var pagelis_before = '<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>'
+			}else{
+				var pagelis_before = '<li><a href="#" aria-label="Previous" onclick="queryData('+(curpage-1)+')"><span aria-hidden="true">&laquo;</span></a></li>'
+			}
+
+			pagelis += pagelis_before
+			for(var k = start;k<=end;k++){
+				if(k==curpage){
+					var  ll = '<li class="active"><a href="#" onclick="queryData('+k+')">'+k+'</a></li>'
+				}else{
+					var  ll = '<li><a href="#" onclick="queryData('+k+')">'+k+'</a></li>'
+				}
+
+				pagelis += ll
+			}
+			if(curpage==totalpage){
+				pagelis_after = '<li class="disabled">\n' +
+						'\t\t\t\t\t<a href="#" aria-label="Next" >\n' +
+						'\t\t\t\t\t\t<span aria-hidden="true">&raquo;</span>\n' +
+						'\t\t\t\t\t</a>\n' +
+						'\t\t\t\t</li>'
+			}else{
+				pagelis_after = '<li>\n' +
+					'\t\t\t\t\t<a href="#" aria-label="Next" onclick="queryData('+(curpage+1)+')">\n' +
+					'\t\t\t\t\t\t<span aria-hidden="true">&raquo;</span>\n' +
+					'\t\t\t\t\t</a>\n' +
+					'\t\t\t\t</li>'
+			}
+
+			pagelis += pagelis_after
+			$("#pagelis").html(pagelis)
+		})
+
+	}
+</script>
 <body>
 	<div id="header"></div>
 	<div class="container">
@@ -33,99 +161,11 @@
 			<div style="margin:0 auto; margin-top:10px;width:950px;">
 				<strong>我的订单</strong>
 				<table class="table table-bordered">
-					<tbody>
+					<tbody id = "orders">
 						<tr class="success">
-							<th colspan="5">订单编号:9005 </th>
-						</tr>
-						<tr class="warning">
-							<th>图片</th>
-							<th>商品</th>
-							<th>价格</th>
-							<th>数量</th>
-							<th>小计</th>
-						</tr>
-						<tr class="active">
-							<td width="60" width="40%">
-								<input type="hidden" name="id" value="22">
-								<img src="./image/dadonggua.jpg" width="70" height="60">
-							</td>
-							<td width="30%">
-								<a target="_blank"> 有机蔬菜 大冬瓜...</a>
-							</td>
-							<td width="20%">
-								￥298.00
-							</td>
-							<td width="10%">
-								5
-							</td>
-							<td width="15%">
-								<span class="subtotal">￥596.00</span>
-							</td>
-						</tr>
-					</tbody>
-					<tbody>
-						<tr class="success">
-							<th colspan="5">订单编号:9004 </th>
-						</tr>
-						<tr class="warning">
-							<th>图片</th>
-							<th>商品</th>
-							<th>价格</th>
-							<th>数量</th>
-							<th>小计</th>
-						</tr>
-						<tr class="active">
-							<td width="60" width="40%">
-								<input type="hidden" name="id" value="22">
-								<img src="./image/dadonggua.jpg" width="70" height="60">
-							</td>
-							<td width="30%">
-								<a target="_blank"> 有机蔬菜 大冬瓜...</a>
-							</td>
-							<td width="20%">
-								￥298.00
-							</td>
-							<td width="10%">
-								5
-							</td>
-							<td width="15%">
-								<span class="subtotal">￥596.00</span>
-							</td>
-						</tr>
-					</tbody>
-					<tbody>
-						<tr class="success">
-							<th colspan="5">订单编号:9003 </th>
-						</tr>
-						<tr class="warning">
-							<th>图片</th>
-							<th>商品</th>
-							<th>价格</th>
-							<th>数量</th>
-							<th>小计</th>
-						</tr>
-						<tr class="active">
-							<td width="60" width="40%">
-								<input type="hidden" name="id" value="22">
-								<img src="./image/dadonggua.jpg" width="70" height="60">
-							</td>
-							<td width="30%">
-								<a target="_blank"> 有机蔬菜 大冬瓜...</a>
-							</td>
-							<td width="20%">
-								￥298.00
-							</td>
-							<td width="10%">
-								5
-							</td>
-							<td width="15%">
-								<span class="subtotal">￥596.00</span>
-							</td>
-						</tr>
-					</tbody>
-					<tbody>
-						<tr class="success">
-							<th colspan="5">订单编号:9002 </th>
+							<th colspan="2">订单编号:9005 </th>
+							<th colspan="1"><a href="order_info.html?oid=?">未付款</a> </th>
+							<th colspan="2">金额：1000元</th>
 						</tr>
 						<tr class="warning">
 							<th>图片</th>
@@ -157,7 +197,7 @@
 			</div>
 		</div>
 		<div style="text-align: center;">
-			<ul class="pagination">
+			<ul class="pagination" id = "pagelis">
 				<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
 				<li class="active"><a href="#">1</a></li>
 				<li><a href="#">2</a></li>

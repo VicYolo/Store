@@ -10,4 +10,8 @@ public interface CategoryDao {
     List<Product> findByHot();
     List<Product> findByNew();
     Product findBypid(String pid);
+
+    List<Product> findByCid(String cid,int startIndex, int pagesize);
+
+    int findTotalNumByCid(String cid);
 }

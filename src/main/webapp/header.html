@@ -13,8 +13,8 @@
         $.get("category/findAll",{},function (res){
             // console.log(res)
             res_li = ''
-            for(var re of res){
-                var li = '<li><a href="#">'+re.cname+'</a></li>'
+            for(var re in res){
+                var li = '<li><a href="product_list.html?cid='+(parseInt(re)+1)+'">'+res[re].cname+'</a></li>'
                 res_li +=li
             }
             $("#category").html(res_li)
@@ -24,11 +24,19 @@
             // alert("henqiguai")
             if(res!=null){
                 var msg = "欢迎回来，"+res.name
-                $("#name").html(msg)
+                $("#one").html("<li id = \"name\">"+msg+"</li> ")
+                $("#two").html('<li><a href="#" onclick="logout()">退出</a></li>')
+            }else{
+                $("#one").html("<li id = \"name\"><a href=\"login.html\">登录</a></li>")
+                $("#two").html("<li><a href=\"register.html\">注册</a></li>")
             }
-
         })
     })
+    function logout(){
+        $.get("user/logout",{},function (){
+            location.href= "login.html"
+        })
+    }
 </script>
 <body>
     <!--
@@ -44,10 +52,10 @@
         </div>
         <div class="col-md-3" style="padding-top:20px">
             <ol class="list-inline">
-                <li id = "name"></li>
-                <li><a href="login.html">登录</a></li>
-                <li><a href="register.html">注册</a></li>
+                <li id = "one"></li>
+                <li id = "two"></li>
                 <li><a href="cart.html">购物车</a></li>
+                <li><a href="order_list.html">我的订单</a></li>
             </ol>
         </div>
     </div>
@@ -67,7 +75,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">首页</a>
+                    <a class="navbar-brand" href="index.html">首页</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->

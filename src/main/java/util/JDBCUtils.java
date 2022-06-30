@@ -73,4 +73,62 @@ public class JDBCUtils {
 	public static void close(Connection conn, Statement stmt) {
 		close(conn, stmt, null);
 	}
+
+	public static void closeConn(Connection conn) {
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			conn = null;
+		}
+	}
+	/**
+	 * 开始事务
+	 * @throws SQLException
+	 */
+	public static void startTransaction() throws SQLException{
+		//1.获取连接
+		Connection conn=getConnection();
+
+		//2.开始
+		conn.setAutoCommit(false);
+	}
+
+	/**
+	 * 事务提交
+	 */
+	public static void commitAndClose(){
+		try {
+			//0.获取连接
+			Connection conn = getConnection();
+
+			//1.提交事务
+			conn.commit();
+
+			//2.关闭且移除
+			closeConn(conn);
+		} catch (SQLException e) {
+		}
+
+	}
+
+	/**
+	 * 提交回顾
+	 */
+	public static void rollbackAndClose(){
+		try {
+			//0.获取连接
+			Connection conn = getConnection();
+
+			//1.事务回顾
+			conn.rollback();
+
+			//2.关闭且移除
+			closeConn(conn);
+		} catch (SQLException e) {
+		}
+
+	}
 }

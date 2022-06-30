@@ -41,4 +41,24 @@ public class CategoryDaoImpl implements CategoryDao {
         }
         return product.get(0);
     }
+
+    @Override
+    public List<Product> findByCid(String cid,int startIndex, int pagesize) {
+        String sql = "select * from product where cid = ? order by pdate desc limit ?,?";
+        return jdbcTemplate.query(sql,new BeanPropertyRowMapper<Product>(Product.class),cid,startIndex,pagesize);
+    }
+
+    @Override
+    public int findTotalNumByCid(String cid) {
+        System.out.println("cid = " + cid);
+        String sql = "select count(*) from product where cid = ?";
+        int r = 0;
+        try{
+            r = jdbcTemplate.queryForObject(sql,new Object[]{cid},Integer.class);
+        }catch(Exception e){
+            System.out.println("出错了");
+        }
+        System.out.println(r);
+        return r;
+    }
 }

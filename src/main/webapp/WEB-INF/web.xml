@@ -4,4 +4,20 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <filter>
+    <filter-name>PrivilegeFilter</filter-name>
+    <filter-class>web.filter.PrivilegeFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>PrivilegeFilter</filter-name>
+    <url-pattern>/cart.html</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>PrivilegeFilter</filter-name>
+    <url-pattern>/order_list.html</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>PrivilegeFilter</filter-name>
+    <url-pattern>/order_info.html</url-pattern>
+  </filter-mapping>
 </web-app>

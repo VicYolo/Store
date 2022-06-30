@@ -11,6 +11,7 @@
 		<!-- 引入自定义css文件 style.css -->
 		<link rel="stylesheet" href="./css/style.css" type="text/css" />
 		<script type="text/javascript" src="js/include.js"></script>
+		<script type="text/javascript" src="js/getParameter.js"></script>
 
 		<style>
 			body {
@@ -24,112 +25,181 @@
 			}
 		</style>
 	</head>
+	<script>
+		$(function (){
+			var cid = getParameter("cid")
+			var curpage = 1
+			queryProducts(cid,curpage)
+		})
+		function queryProducts(cid,curpage){
+			$.post("product/findByCid",{cid:cid,curpage:curpage},function (res){
+				// console.log(res)
+				// 数据展示
+				var product_liss = ''
+				for(var i=0;i<res.data.length;i++){
+					var product = res.data[i]
+					var ll = '<div class="col-md-2">\n' +
+							'\t\t\t\t<a href="product_info.html?pid='+product.pid+'">\n' +
+							'\t\t\t\t\t<img src="'+product.pimage+'" width="150" height="150" style="display: inline-block;">\n' +
+							'\t\t\t\t</a>\n' +
+							'\t\t\t\t<a href="product_info.html?pid='+product.pid+'" style=\'color:green\'>'+product.pname+'</a>\n' +
+							'\t\t\t\t<p><font color="#FF0000">商城价：&yen;'+product.shop_price+'</font></p>\n' +
+							'\t\t\t</div>'
+					product_liss+=ll
+				}
+				$("#product_lis").html(product_liss)
+				// 分页展示
+				var totalpage = res.totalPage
+				console.log(totalpage)
+				// var totalpage =100   测试分页所用
+				var start,end
+				if(totalpage<10){
+					start = 1
+					end = totalpage
+				}else{
+					start = curpage - 4
+					end = curpage + 4
+					if(start<1){
+						start = 1
+						end = 9
+					}else if(end>totalpage){
+						end = totalpage
+						start = totalpage - 8
+					}
+				}
+				var pagelis = ""
+				if(curpage==1){
+					var pagelis_before = '<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>'
+				}else{
+					var pagelis_before = '<li><a href="#" aria-label="Previous" onclick="queryProducts('+cid+','+(curpage-1)+')"><span aria-hidden="true">&laquo;</span></a></li>'
+				}
 
+				pagelis += pagelis_before
+				for(var k = start;k<=end;k++){
+					if(k==curpage){
+						var  ll = '<li class="active"><a href="#" onclick="queryProducts('+cid+','+(curpage-1)+')">'+k+'</a></li>'
+					}else{
+						var  ll = '<li><a href="#" onclick="queryProducts('+cid+','+k+')">'+k+'</a></li>'
+					}
+
+					pagelis += ll
+				}
+				if(curpage==totalpage){
+					pagelis_after = '<li class="disabled">\n' +
+							'\t\t\t\t\t<a href="#" aria-label="Next" >\n' +
+							'\t\t\t\t\t\t<span aria-hidden="true">&raquo;</span>\n' +
+							'\t\t\t\t\t</a>\n' +
+							'\t\t\t\t</li>'
+				}else{
+					pagelis_after = '<li>\n' +
+							'\t\t\t\t\t<a href="#" aria-label="Next" onclick="queryProducts('+cid+','+(curpage+1)+')">\n' +
+							'\t\t\t\t\t\t<span aria-hidden="true">&raquo;</span>\n' +
+							'\t\t\t\t\t</a>\n' +
+							'\t\t\t\t</li>'
+				}
+				pagelis += pagelis_after
+				$("#pagelis").html(pagelis)
+			})
+		}
+	</script>
 	<body>
 		
 		<div id = "header"></div>
-		<div class="row" style="width:1210px;margin:0 auto;">
-			<div class="col-md-12">
-				<ol class="breadcrumb">
-					<li><a href="#">首页</a></li>
-				</ol>
-			</div>
+		<div class="row" style="width:1210px;margin:0 auto;" id = "product_lis">
+<!--			<div class="col-md-2">-->
+<!--				<a href="product_info.html">-->
+<!--					<img src="./products/1/cs10001.jpg" width="170" height="170" style="display: inline-block;">-->
+<!--				</a>-->
+<!--				<p><a href="product_info.html" style='color:green'>冬瓜</a></p>-->
+<!--				<p><font color="#FF0000">商城价：&yen;299.00</font></p>-->
+<!--			</div>-->
 
-			<div class="col-md-2">
-				<a href="product_info.html">
-					<img src="./products/1/cs10001.jpg" width="170" height="170" style="display: inline-block;">
-				</a>
-				<p><a href="product_info.html" style='color:green'>冬瓜</a></p>
-				<p><font color="#FF0000">商城价：&yen;299.00</font></p>
-			</div>
+<!--			<div class="col-md-2">-->
+<!--				<a href="product_info.html">-->
+<!--					<img src="./products/1/cs10002.jpg" width="170" height="170" style="display: inline-block;">-->
+<!--				</a>-->
+<!--				<p><a href="product_info.html" style='color:green'>圆白菜</a></p>-->
+<!--				<p><font color="#FF0000">商城价：&yen;299.00</font></p>-->
+<!--			</div>-->
 
-			<div class="col-md-2">
-				<a href="product_info.html">
-					<img src="./products/1/cs10002.jpg" width="170" height="170" style="display: inline-block;">
-				</a>
-				<p><a href="product_info.html" style='color:green'>圆白菜</a></p>
-				<p><font color="#FF0000">商城价：&yen;299.00</font></p>
-			</div>
+<!--			<div class="col-md-2">-->
+<!--				<a href="product_info.html">-->
+<!--					<img src="./products/1/cs10003.jpg" width="170" height="170" style="display: inline-block;">-->
+<!--				</a>-->
+<!--				<p><a href="product_info.html" style='color:green'>甜玉米</a></p>-->
+<!--				<p><font color="#FF0000">商城价：&yen;299.00</font></p>-->
+<!--			</div>-->
 
-			<div class="col-md-2">
-				<a href="product_info.html">
-					<img src="./products/1/cs10003.jpg" width="170" height="170" style="display: inline-block;">
-				</a>
-				<p><a href="product_info.html" style='color:green'>甜玉米</a></p>
-				<p><font color="#FF0000">商城价：&yen;299.00</font></p>
-			</div>
+<!--			<div class="col-md-2">-->
+<!--				<a href="product_info.html">-->
+<!--					<img src="./products/1/cs10004.jpg" width="170" height="170" style="display: inline-block;">-->
+<!--				</a>-->
+<!--				<p><a href="product_info.html" style='color:green'>胡萝卜</a></p>-->
+<!--				<p><font color="#FF0000">商城价：&yen;299.00</font></p>-->
+<!--			</div>-->
+<!--			<div class="col-md-2">-->
+<!--				<a href="product_info.html">-->
+<!--					<img src="./products/1/cs10005.jpg" width="170" height="170" style="display: inline-block;">-->
+<!--				</a>-->
+<!--				<p><a href="product_info.html" style='color:green'>芹菜</a></p>-->
+<!--				<p><font color="#FF0000">商城价：&yen;299.00</font></p>-->
+<!--			</div>-->
 
-			<div class="col-md-2">
-				<a href="product_info.html">
-					<img src="./products/1/cs10004.jpg" width="170" height="170" style="display: inline-block;">
-				</a>
-				<p><a href="product_info.html" style='color:green'>胡萝卜</a></p>
-				<p><font color="#FF0000">商城价：&yen;299.00</font></p>
-			</div>
-			<div class="col-md-2">
-				<a href="product_info.html">
-					<img src="./products/1/cs10005.jpg" width="170" height="170" style="display: inline-block;">
-				</a>
-				<p><a href="product_info.html" style='color:green'>芹菜</a></p>
-				<p><font color="#FF0000">商城价：&yen;299.00</font></p>
-			</div>
+<!--			<div class="col-md-2">-->
+<!--				<a href="product_info.html">-->
+<!--					<img src="./products/1/cs10006.jpg" width="170" height="170" style="display: inline-block;">-->
+<!--				</a>-->
+<!--				<p><a href="product_info.html" style='color:green'>韭菜</a></p>-->
+<!--				<p><font color="#FF0000">商城价：&yen;299.00</font></p>-->
+<!--			</div>-->
 
-			<div class="col-md-2">
-				<a href="product_info.html">
-					<img src="./products/1/cs10006.jpg" width="170" height="170" style="display: inline-block;">
-				</a>
-				<p><a href="product_info.html" style='color:green'>韭菜</a></p>
-				<p><font color="#FF0000">商城价：&yen;299.00</font></p>
-			</div>
-
-			<div class="col-md-2">
-				<a href="product_info.html">
-					<img src="./products/1/cs10007.jpg" width="170" height="170" style="display: inline-block;">
-				</a>
-				<p><a href="product_info.html" style='color:green'>香菜</a></p>
-				<p><font color="#FF0000">商城价：&yen;299.00</font></p>
-			</div>
-			<div class="col-md-2">
-				<a href="product_info.html">
-					<img src="./products/1/cs10008.jpg" width="170" height="170" style="display: inline-block;">
-				</a>
-				<p><a href="product_info.html" style='color:green'>土豆</a></p>
-				<p><font color="#FF0000">商城价：&yen;299.00</font></p>
-			</div>
-			<div class="col-md-2">
-				<a href="product_info.html">
-					<img src="./products/1/cs10007.jpg" width="170" height="170" style="display: inline-block;">
-				</a>
-				<p><a href="product_info.html" style='color:green'>香菜</a></p>
-				<p><font color="#FF0000">商城价：&yen;299.00</font></p>
-			</div>
-			<div class="col-md-2">
-				<a href="product_info.html">
-					<img src="./products/1/cs10008.jpg" width="170" height="170" style="display: inline-block;">
-				</a>
-				<p><a href="product_info.html" style='color:green'>土豆</a></p>
-				<p><font color="#FF0000">商城价：&yen;299.00</font></p>
-			</div>
-			<div class="col-md-2">
-				<a href="product_info.html">
-					<img src="./products/1/cs10007.jpg" width="170" height="170" style="display: inline-block;">
-				</a>
-				<p><a href="product_info.html" style='color:green'>香菜</a></p>
-				<p><font color="#FF0000">商城价：&yen;299.00</font></p>
-			</div>
-			<div class="col-md-2">
-				<a href="product_info.html">
-					<img src="./products/1/cs10008.jpg" width="170" height="170" style="display: inline-block;">
-				</a>
-				<p><a href="product_info.html" style='color:green'>土豆</a></p>
-				<p><font color="#FF0000">商城价：&yen;299.00</font></p>
-			</div>
-
+<!--			<div class="col-md-2">-->
+<!--				<a href="product_info.html">-->
+<!--					<img src="./products/1/cs10007.jpg" width="170" height="170" style="display: inline-block;">-->
+<!--				</a>-->
+<!--				<p><a href="product_info.html" style='color:green'>香菜</a></p>-->
+<!--				<p><font color="#FF0000">商城价：&yen;299.00</font></p>-->
+<!--			</div>-->
+<!--			<div class="col-md-2">-->
+<!--				<a href="product_info.html">-->
+<!--					<img src="./products/1/cs10008.jpg" width="170" height="170" style="display: inline-block;">-->
+<!--				</a>-->
+<!--				<p><a href="product_info.html" style='color:green'>土豆</a></p>-->
+<!--				<p><font color="#FF0000">商城价：&yen;299.00</font></p>-->
+<!--			</div>-->
+<!--			<div class="col-md-2">-->
+<!--				<a href="product_info.html">-->
+<!--					<img src="./products/1/cs10007.jpg" width="170" height="170" style="display: inline-block;">-->
+<!--				</a>-->
+<!--				<p><a href="product_info.html" style='color:green'>香菜</a></p>-->
+<!--				<p><font color="#FF0000">商城价：&yen;299.00</font></p>-->
+<!--			</div>-->
+<!--			<div class="col-md-2">-->
+<!--				<a href="product_info.html">-->
+<!--					<img src="./products/1/cs10008.jpg" width="170" height="170" style="display: inline-block;">-->
+<!--				</a>-->
+<!--				<p><a href="product_info.html" style='color:green'>土豆</a></p>-->
+<!--				<p><font color="#FF0000">商城价：&yen;299.00</font></p>-->
+<!--			</div>-->
+<!--			<div class="col-md-2">-->
+<!--				<a href="product_info.html">-->
+<!--					<img src="./products/1/cs10007.jpg" width="170" height="170" style="display: inline-block;">-->
+<!--				</a>-->
+<!--				<p><a href="product_info.html" style='color:green'>香菜</a></p>-->
+<!--				<p><font color="#FF0000">商城价：&yen;299.00</font></p>-->
+<!--			</div>-->
+<!--			<div class="col-md-2">-->
+<!--				<a href="product_info.html">-->
+<!--					<img src="./products/1/cs10008.jpg" width="170" height="170" style="display: inline-block;">-->
+<!--				</a>-->
+<!--				<p><a href="product_info.html" style='color:green'>土豆</a></p>-->
+<!--				<p><font color="#FF0000">商城价：&yen;299.00</font></p>-->
+<!--			</div>-->
 		</div>
 
 		<!--分页 -->
 		<div style="width:380px;margin:0 auto;margin-top:50px;">
-			<ul class="pagination" style="text-align:center; margin-top:10px;">
+			<ul class="pagination" style="text-align:center; margin-top:10px;" id ="pagelis">
 				<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
 				<li class="active"><a href="#">1</a></li>
 				<li><a href="#">2</a></li>
@@ -149,23 +219,6 @@
 		</div>
 		<!-- 分页结束=======================        -->
 
-		<!--
-       		商品浏览记录:
-        -->
-		<div style="width:1210px;margin:0 auto; padding: 0 9px;border: 1px solid #ddd;border-top: 2px solid #999;height: 246px;">
-
-			<h4>浏览记录</h4>
-			<div style="width: 50%;float: right;text-align: right;"><a href="">more</a></div>
-			<div style="clear: both;"></div>
-
-			<div style="overflow: hidden;">
-
-				<ul style="list-style: none;">
-					<li style="width: 150px;height: 216px;float: left;margin: 0 8px 0 0;padding: 0 18px 15px;text-align: center"><img src="./products/1/cs10001.jpg" width="130px" height="130px" /></li>
-				</ul>
-
-			</div>
-		</div>
 		<div id = "footer"></div>
 
 	</body>

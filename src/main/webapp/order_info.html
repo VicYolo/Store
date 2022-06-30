@@ -11,6 +11,7 @@
 	<!-- 引入自定义css文件 style.css -->
 	<link rel="stylesheet" href="./css/style.css" type="text/css" />
 	<script type="text/javascript" src="js/include.js"></script>
+	<script type="text/javascript" src="js/getParameter.js"></script>
 	<style>
 		body {
 			margin-top: 20px;
@@ -23,13 +24,95 @@
 		}
 	</style>
 </head>
+<script>
+	$(function (){
+		// 展示此次订单数据
+		$.get("order/showCurOrder",{},function(res){
+			if(null!=res) {
+				showOrder(res)
+			}
+		})
+		var oid = getParameter("oid")
+		$.get("order/getOrderByOid",{oid:oid},function (res){
+			console.log(oid+".....前台")
 
+			showOrder(res)
+		})
+	})
+	function showOrder(res){
+		// 将订单结果展示到前端
+		console.log(res)
+		h_lis = '<strong>订单详情</strong>\n' +
+				'\t\t\t\t<table class="table table-bordered">\n' +
+				'\t\t\t\t\t<tbody>\n' +
+				'\t\t\t\t\t\t<tr class="warning">\n' +
+				'\t\t\t\t\t\t\t<th colspan="5">订单编号:'+res.oid+'</th>\n' +
+				'\t\t\t\t\t\t</tr>\n' +
+				'\t\t\t\t\t\t<tr class="warning">\n' +
+				'\t\t\t\t\t\t\t<th>图片</th>\n' +
+				'\t\t\t\t\t\t\t<th>商品</th>\n' +
+				'\t\t\t\t\t\t\t<th>价格</th>\n' +
+				'\t\t\t\t\t\t\t<th>数量</th>\n' +
+				'\t\t\t\t\t\t\t<th>小计</th>\n' +
+				'\t\t\t\t\t\t</tr>'
+		lis = ''
+		lis+=h_lis
+		for(var i=0;i< res.items.length;i++){
+			var goods = res.items[i]
+			li = '<tr class="active">\n' +
+					'\t\t\t\t\t\t\t<td width="60" width="40%">\n' +
+					'\t\t\t\t\t\t\t\t<input type="hidden" name="id" value="22">\n' +
+					'\t\t\t\t\t\t\t\t<img src="'+goods.product.pimage+'" width="70" height="60">\n' +
+					'\t\t\t\t\t\t\t</td>\n' +
+					'\t\t\t\t\t\t\t<td width="30%">\n' +
+					'\t\t\t\t\t\t\t\t<a target="_blank">'+goods.product.pname+'</a>\n' +
+					'\t\t\t\t\t\t\t</td>\n' +
+					'\t\t\t\t\t\t\t<td width="20%">\n' +
+					'\t\t\t\t\t\t\t\t￥'+goods.product.shop_price+'\n' +
+					'\t\t\t\t\t\t\t</td>\n' +
+					'\t\t\t\t\t\t\t<td width="10%">\n' +
+					'\t\t\t\t\t\t\t\t'+goods.count+'\n' +
+					'\t\t\t\t\t\t\t</td>\n' +
+					'\t\t\t\t\t\t\t<td width="15%">\n' +
+					'\t\t\t\t\t\t\t\t<span class="subtotal">￥'+goods.subtotal+'</span>\n' +
+					'\t\t\t\t\t\t\t</td>\n' +
+					'\t\t\t\t\t\t</tr>'
+			lis+=li
+		}
+		lis+='\t</tbody>\n' +
+				'\t\t\t\t</table>'
+		$("#order_detail").html(lis)
+		$("#total_price").html('商品金额: <strong style="color:#ff6600;">￥'+res.total+'元</strong>')
+	}
+
+	function payForOrder(){
+		var address = $("#address").val()
+		var nname = $("#nname").val()
+		var phone = $("#phone").val()
+
+		var addressTest = address==""?false:true
+		var nameTest = nname==""?false:true
+		var phoneTest = phone==""?false:true
+		var test = addressTest&&nameTest&&phoneTest
+		if(test){
+			alert("你已成功支付")
+			var orderState = 1
+			var oid = getParameter("oid")
+			$.post("order/changeOrderStatus",{oid:oid,orderState:orderState,address:address,name:nname,telephone:phone});
+			location.href = "order_list.html"
+		}else{
+			alert("请填写相关信息")
+		}
+
+	}
+
+</script>
 <body>
 	<div id="header"></div>
 	<div class="container">
 		<div class="row">
 
-			<div style="margin:0 auto;margin-top:10px;width:950px;">
+			<div style="margin:0 auto;margin-top:10px;width:950px;" id = "order_detail">
 				<strong>订单详情</strong>
 				<table class="table table-bordered">
 					<tbody>
@@ -65,7 +148,7 @@
 				</table>
 			</div>
 
-			<div style="text-align:right;margin-right:120px;">
+			<div style="text-align:right;margin-right:120px;" id = "total_price">
 				商品金额: <strong style="color:#ff6600;">￥596.00元</strong>
 			</div>
 
@@ -75,27 +158,25 @@
 			<hr />
 			<form class="form-horizontal" style="margin-top:5px;margin-left:150px;">
 				<div class="form-group">
-					<label for="username" class="col-sm-1 control-label">地址</label>
+					<label for="address" class="col-sm-1 control-label">地址</label>
 					<div class="col-sm-5">
-						<input type="text" class="form-control" id="username" placeholder="请输入收货地址">
+						<input type="text" class="form-control" id="address" placeholder="请输入收货地址">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="inputPassword3" class="col-sm-1 control-label">收货人</label>
+					<label for="nname" class="col-sm-1 control-label">收货人</label>
 					<div class="col-sm-5">
-						<input type="password" class="form-control" id="inputPassword3" placeholder="请输收货人">
+						<input type="text" class="form-control" id="nname" placeholder="请输收货人">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="confirmpwd" class="col-sm-1 control-label">电话</label>
+					<label for="phone" class="col-sm-1 control-label">电话</label>
 					<div class="col-sm-5">
-						<input type="password" class="form-control" id="confirmpwd" placeholder="请输入联系方式">
+						<input type="text" class="form-control" id="phone" placeholder="请输入联系方式">
 					</div>
 				</div>
 			</form>
-
 			<hr />
-
 			<div style="margin-top:5px;margin-left:150px;">
 				<strong>选择银行：</strong>
 				<p>
@@ -124,7 +205,7 @@
 				</p>
 				<hr />
 				<p style="text-align:right;margin-right:100px;">
-					<a href="javascript:document.getElementById('orderForm').submit();">
+					<a href="#" onclick="payForOrder()">
 						<img src="./images/finalbutton.gif" width="204" height="51" border="0" />
 					</a>
 				</p>
