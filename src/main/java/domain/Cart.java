@@ -74,7 +74,6 @@ public class Cart {
 	public void clearCart(){
 		//1.清空map
 		itemMap.clear();
-		
 		//2.修改总金额 = 0
 		total=0.0;
 	}
