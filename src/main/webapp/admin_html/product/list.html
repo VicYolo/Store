@@ -1,0 +1,231 @@
+<!doctype html>
+<HTML>
+    <HEAD>
+        <meta http-equiv="Content-Language" content="zh-cn">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="../../css/Style1.css" rel="stylesheet" type="text/css"/>
+        <script language="javascript" src="../../js/jquery-3.3.1.js"></script>
+        <script type="text/javascript">
+            function loadTable() {
+                var lis = "<form id=\"Form1\" name=\"Form1\" action=\"../../user/list.jsp\" method=\"post\">\n" +
+                    "<table cellSpacing=\"1\" cellPadding=\"0\" width=\"100%\" align=\"center\" bgColor=\"#f5fafe\" border=\"0\">\n" +
+                    "<TBODY>\n" +
+                    "<tr>\n" +
+                    "<td class=\"ta_01\" align=\"center\" bgColor=\"#afd1f3\">\n" +
+                    "<strong>商品列表</strong>\n" +
+                    "</TD>\n" +
+                    "</tr>\n" +
+                    "<tr>\n" +
+                    "<td class=\"ta_01\" align=\"right\">\n" +
+                    "<button type=\"button\" id=\"add\" name=\"add\" value=\"添加\" class=\"button_add\" onclick='addProduct()'>\n" +
+                    "&#28155;&#21152;\n" +
+                    "</button>\n" +
+                    "\n" +
+                    "</td>\n" +
+                    "</tr>\n" +
+                    "<tr>\n" +
+                    "<td class=\"ta_01\" align=\"center\" bgColor=\"#f5fafe\">\n" +
+                    "<table cellspacing=\"0\" cellpadding=\"1\" rules=\"all\"\n" +
+                    "bordercolor=\"gray\" border=\"1\" id=\"DataGrid1\"\n" +
+                    "style=\"BORDER-RIGHT: gray 1px solid; BORDER-TOP: gray 1px solid; BORDER-LEFT: gray 1px solid; WIDTH: 100%; WORD-BREAK: break-all; BORDER-BOTTOM: gray 1px solid; BORDER-COLLAPSE: collapse; BACKGROUND-COLOR: #f5fafe; WORD-WRAP: break-word\">\n" +
+                    "<tr\n" +
+                    "style=\"FONT-WEIGHT: bold; FONT-SIZE: 12pt; HEIGHT: 25px; BACKGROUND-COLOR: #afd1f3\">\n" +
+                    "\n" +
+                    "<td align=\"center\" width=\"10%\">\n" +
+                    "序号\n" +
+                    "</td>\n" +
+                    "<td align=\"center\" width=\"10%\">\n" +
+                    "商品图片\n" +
+                    "</td>\n" +
+                    "<td align=\"center\" width=\"20%\">\n" +
+                    "商品名称\n" +
+                    "</td>\n" +
+                    "<td align=\"center\" width=\"10%\">\n" +
+                    "商品价格\n" +
+                    "</td>\n" +
+                    "<td align=\"center\" width=\"10%\">\n" +
+                    "点击数\n" +
+                    "</td>\n" +
+                    "<td align=\"center\" width=\"10%\">\n" +
+                    "是否热门\n" +
+                    "</td>\n" +
+                    "<td align=\"center\" width=\"10%\">\n" +
+                    "是否上架\n" +
+                    "</td>\n" +
+                    "<td width=\"10%\" align=\"center\">\n" +
+                    "编辑\n" +
+                    "</td>\n" +
+                    "<td width=\"10%\" align=\"center\">\n" +
+                    "下架\n" +
+                    "</td>\n" +
+                    "</tr>";
+                return lis
+            }
+
+            //发送请求
+            function display() {
+                var lis = loadTable();
+                $.get("../../adminProductServlet/findAll", {}, function (data) {
+                    //遍历数组,拼接字符串()
+                    for (var i = 0; i < data.length; i++) {
+                        console.log(data[i]["pname"]);
+                        console.log(data[i].pflag)
+                        var li = "<tr onmouseover=\"this.style.backgroundColor = 'white'\" onmouseout=\"this.style.backgroundColor = '#F5FAFE';\">\n" +
+                            "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\" width=\"10%\">" +
+                            (i + 1) +
+                            "</td>\n" +
+                            "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\" width=\"10%\">\n" +
+                            "<img width=\"40\" height=\"45\" src=\"../../" +
+                            data[i].pimage +
+                            "\">\n" +
+                            "</td>\n" +
+                            "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\" width=\"20%\">" +
+                            data[i].pname +
+                            "</td>\n" +
+                            "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\" width=\"10%\">\n" +
+                            data[i].shop_price +
+                            "</td>\n" +
+                            "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\" width=\"10%\">\n" +
+                            0 +
+                            "</td>\n" +
+                            "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\" width=\"10%\">\n";
+                        if (data[i].is_hot === 1) {
+                            li += "是"
+                        } else {
+                            li += "否"
+                        }
+                        li += "</td>\n" +
+                            "<td style=\"CURSOR: hand; HEIGHT: 22px\" align=\"center\" width=\"10%\">";
+                        if (data[i].pflag === 0) {
+                            li += "是"
+                        } else {
+                            li += "否"
+                        }
+                        li += "</td>\n" +
+                            "<td align=\"center\" style=\"HEIGHT: 22px\" width=\"10%\">\n" +
+                            // "<a href=\"${ pageContext.request.contextPath }/adminCategory\">\n" +
+                            "<img src=\"../../images/i_edit.gif\" border=\"0\" style=\"CURSOR: hand\" onclick='edit(this)'>\n" +
+                            // "</a>\n" +
+                            "</td>\n" +
+                            "\n" +
+                            "<td align=\"center\" style=\"HEIGHT: 22px\" width=\"10%\">\n" +
+                            // "<a href=\"../adminCategory/delete\?cid=\"+data[i]+\">\n" +
+                            "<img src=\"../../images/i_del.gif\" width=\"16\" height=\"16\" style=\"CURSOR: hand\" onclick='del(this)'>\n" +
+                            // "</a>\n" +
+                            "</td>\n" +
+                            "</tr>";
+                        lis += li;
+                    }
+                    lis += " </table>\n" +
+                        "</td>\n" +
+                        "</tr>\n" +
+                        "</TBODY>\n" +
+                        "</table>\n" +
+                        "</form>";
+                    //将 lis 设置 html 内容中
+                    $("#product_table").html(lis);
+                }, "json");
+            }
+
+            $(function () {
+                display()
+            })
+
+            function addProduct() {
+                window.location.href = "add.html";
+            }
+
+            /**
+             * 点击删除按钮下架商品
+             */
+            function del(obj) {
+                var tr = obj.parentNode.parentNode;
+                var pname = tr.cells.item(2).innerHTML;
+                alert(pname)
+                pname = encodeURIComponent(pname);//url编码
+                $.get("../../adminProductServlet/delete", {"pname": pname}, function (data) {
+                    alert("下架成功")
+                    window.location.href = "list.html"
+                }, "text")
+            }
+
+            /**
+             * 点击编辑按钮编辑类别
+             */
+            function edit(obj) {
+                //跳转到edit.html并传参数
+                var tr = obj.parentNode.parentNode;
+                var pname = tr.cells.item(2).innerHTML;
+                // alert(pname)
+                window.location.href = "edit.html?pname=" + pname
+            }
+
+        </script>
+    </HEAD>
+    <body>
+        <br>
+        <div id="product_table"></div>
+
+    </body>
+</HTML>
+
+
+<!--<form id="Form1" name="Form1" action="${pageContext.request.contextPath}/user/list.jsp" method="post">-->
+<!--    <table cellSpacing="1" cellPadding="0" width="100%" align="center" bgColor="#f5fafe" border="0">-->
+<!--        <TBODY>-->
+<!--        <tr>-->
+<!--            <td class="ta_01" align="center" bgColor="#afd1f3">-->
+<!--                <strong>商品列表</strong>-->
+<!--            </TD>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td class="ta_01" align="right">-->
+<!--                <button type="button" id="add" name="add" value="添加" class="button_add" onclick="addProduct()">-->
+<!--                    &#28155;&#21152;-->
+<!--                </button>-->
+
+<!--            </td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td class="ta_01" align="center" bgColor="#f5fafe">-->
+<!--                <table cellspacing="0" cellpadding="1" rules="all"-->
+<!--                       bordercolor="gray" border="1" id="DataGrid1"-->
+<!--                       style="BORDER-RIGHT: gray 1px solid; BORDER-TOP: gray 1px solid; BORDER-LEFT: gray 1px solid; WIDTH: 100%; WORD-BREAK: break-all; BORDER-BOTTOM: gray 1px solid; BORDER-COLLAPSE: collapse; BACKGROUND-COLOR: #f5fafe; WORD-WRAP: break-word">-->
+<!--                    <tr-->
+<!--                            style="FONT-WEIGHT: bold; FONT-SIZE: 12pt; HEIGHT: 25px; BACKGROUND-COLOR: #afd1f3">-->
+<!--                        <td align="center" width="10%">-->
+<!--                            序号-->
+<!--                        </td>-->
+<!--                        <td align="center" width="10%">-->
+<!--                            商品图片-->
+<!--                        </td>-->
+<!--                        <td align="center" width="20%">-->
+<!--                            商品名称-->
+<!--                        </td>-->
+<!--                        <td align="center" width="10%">-->
+<!--                            市场价格-->
+<!--                        </td>-->
+<!--                        <td align="center" width="10%">-->
+<!--                            商品价格-->
+<!--                        </td>-->
+<!--                        <td align="center" width="10%">-->
+<!--                            是否热门-->
+<!--                        </td>-->
+<!--                        <td width="10%" align="center">-->
+<!--                            编辑-->
+<!--                        </td>-->
+<!--                        <td width="10%" align="center">-->
+<!--                            删除-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    &lt;!&ndash;< id="product_table"></>&ndash;&gt;-->
+<!--                    <tr onmouseover="this.style.backgroundColor = 'white'"-->
+<!--                        onmouseout="this.style.backgroundColor = '#F5FAFE';" id="product_table">-->
+<!--                    </tr>-->
+<!--                </table>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        </TBODY>-->
+<!--    </table>-->
+<!--</form>-->
+

@@ -1,5 +1,6 @@
 package domain;
 
+
 import java.io.Serializable;
 
 /**
@@ -41,6 +42,7 @@ public class ResultInfo implements Serializable {
         return flag;
     }
 
+
     public void setFlag(boolean flag) {
         this.flag = flag;
     }
@@ -60,4 +62,5 @@ public class ResultInfo implements Serializable {
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
     }
+
 }
